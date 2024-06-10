@@ -10,7 +10,7 @@ namespace FakelToOzon
 {
     public class GlobalVariables
     {
-        public string BaseURL { get; set; } = "https://www.f-tk.ru";
+        public string BaseURL { get; set; } = "";
         
 
         
