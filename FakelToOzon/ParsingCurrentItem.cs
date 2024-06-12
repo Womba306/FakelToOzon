@@ -26,7 +26,7 @@ namespace FakelToOzon
         public string Color { get; set; }
         public List<string> Size { get; set; }
         public List<string> Images { get; set; }
-        public string Hash { get; set; }
+        
         public string TRTS { get; set; }
         public string GOST { get; set; }
         public string Season { get; set; }
@@ -35,6 +35,7 @@ namespace FakelToOzon
         public string AllParameters { get; set; }
         public string Sex { get; set; }
         public string Category { get; set; }
+        public string Under {  get; set; }
     }
     public class ParsingCurrentItem
     {
@@ -81,7 +82,7 @@ namespace FakelToOzon
         public ParsingCurrentItem GetImgUrls(HtmlAgilityPack.HtmlDocument _document, string _baseUrl)
         {
             
-            builder.Articule = _document.DocumentNode.SelectSingleNode(".//div[@class='item__wrapper wrapper']//div[@class='item__column']//div[@class='item__vendor']//span[@class='item__vendor-item']").InnerText.TrimStart(' ', '\n').TrimEnd(' ', '\n');
+            builder.Articule = _document.DocumentNode.SelectSingleNode(".//div[@class='item__wrapper wrapper']//div[@class='item__column']//div[@class='item__vendor']//span[@class='item__vendor-item']").InnerText.Split(":")[1].TrimStart(' ', '\n').TrimEnd(' ', '\n');
             var imgUrls = _document.DocumentNode.SelectNodes(".//div[@class='swiper-wrapper']//a");
             List<string> images = new List<string>();
             if (imgUrls != null && imgUrls.Count > 0)
@@ -142,7 +143,16 @@ namespace FakelToOzon
         }
         public ParsingCurrentItem GetDescription(HtmlAgilityPack.HtmlDocument _document, string _baseUrl)
         {
-            builder.Description = _document.DocumentNode.SelectSingleNode(".//div[@class='info__descr']/div[@class='wysiwyg']/p").InnerText.TrimStart(' ', '\n').TrimEnd(' ', '\n');
+            string s = "";
+            try
+            {
+                foreach (var des in _document.DocumentNode.SelectNodes(".//div[@class='info__descr']//div[@class='wysiwyg']"))
+                {
+                    s += des.InnerText.TrimStart(' ', '\n').TrimEnd(' ', '\n');
+                }
+            }
+            catch { Console.WriteLine("ЧТо-то с описание не так"); }
+            builder.Description = s;
             //descroption
             return this;
 
@@ -167,6 +177,7 @@ namespace FakelToOzon
                 string[] protect;
                 string data = null;
                 string protectsOUT = "";
+                string under = "";
                 foreach (var tabletItem in tabletLine)
                 {
                     var currentItemData = tabletItem.SelectNodes(".//td");
@@ -188,116 +199,131 @@ namespace FakelToOzon
                                 weght = (Convert.ToDecimal(itemsList[cnt, 1].Replace(".",",")) * 1000).ToString();
                                 break;
                             case "Марка/бренд:":
-                                string logolink = currentItemData[0].SelectSingleNode(".//img[@class='info__logo lazyload']").GetAttributeValue("scr", "").ToString();
-                                switch (logolink)
+                                try
                                 {
-                                    case "/upload/uf/9da/Resurs-1.svg":
-                                        itemsList[cnt, 1] = "Факел";
-                                        break;
-                                    case "/upload/uf/ac1/logo.svg":
-                                        itemsList[cnt, 1] = "БарсПрофи";
-                                        break;
-                                    case "/upload/resize_cache/uf/f23/180_60_1/cropped_Logotip_Rabosiz_2022.png":
-                                        itemsList[cnt, 1] = "Рабосиз";
-                                        break;
-                                    case "/upload/resize_cache/uf/3ad/180_60_1/FireShot-Capture-044-_-Press_tsentr-_ARTI_zavod_-_-arti_zavod.ru.png":
-                                        itemsList[cnt, 1] = "АРТИ-Завод";
-                                        break;
-                                    case "/upload/uf/528/logo.svg":
-                                        itemsList[cnt, 1] = "BENOVY";
-                                        break;
-                                    case "/upload/uf/812/8127d00e5969d98616d684e7782d6a3e.png":
-                                        itemsList[cnt, 1] = "Скорпион";
-                                        break;
-                                    case "/upload/uf/245/Resurs-1.svg":
-                                        itemsList[cnt, 1] = "Псков-Полимер";
-                                        break;
-                                    case "/upload/resize_cache/uf/18b/180_60_1/95097d7ccf5de167a38746e5f2daa547.jpg":
-                                        itemsList[cnt, 1] = "Rutex";
-                                        break;
-                                    case "/upload/uf/6bb/logo.svg":
-                                        itemsList[cnt, 1] = "Защитная линия";
-                                        break;
-                                    case "/upload/resize_cache/uf/54b/180_60_1/54bcd9b2ee60b3aa152ed9b0496ddc65.jpg":
-                                        itemsList[cnt, 1] = "ЗападБалтОбувь";
-                                        break;
-                                    case "/upload/uf/e2a/ursus_top_logo.svg":
-                                        itemsList[cnt, 1] = "URSUS";
-                                        break;
-                                    case "/upload/resize_cache/uf/bd7/180_60_1/bd7b8b0ce469e138793825044f1e0262.png":
-                                        itemsList[cnt, 1] = "SURA";
-                                        break;
-                                    case "/upload/resize_cache/uf/6b2/180_60_1/portwest_logo_oj.png":
-                                        itemsList[cnt, 1] = "Portwest";
-                                        break;
-                                    case "/upload/uf/e35/YAkhting.svg":
-                                        itemsList[cnt, 1] = "Яхтинг";
-                                        break;
-                                    case "/upload/uf/ac6/logo.svg":
-                                        itemsList[cnt, 1] = "ЭЛЕН";
-                                        break;
-                                    case "/upload/resize_cache/uf/6c2/180_60_1/6c2c5bb8d4041948ff7962ad0fb26641.png":
-                                        itemsList[cnt, 1] = "ФЭСТ";
-                                        break;
-                                    case "/upload/resize_cache/uf/c83/180_60_1/c83b079a0189cc09ea5bf2f8c4abd4f4.png":
-                                        itemsList[cnt, 1] = "ОРИОН-РТИ";
-                                        break;
-                                    case "/upload/uf/52e/52e5247b4abc6b48b75ddf43a181ca84.png":
-                                        itemsList[cnt, 1] = "Лилия";
-                                        break;
-                                    case "/upload/uf/a01/Resurs-1.svg":
-                                        itemsList[cnt, 1] = "Бриз-Кама";
-                                        break;
-                                    case "/upload/resize_cache/uf/866/180_60_1/866711a633d2edcb1ec07deed7075d0b.png":
-                                        itemsList[cnt, 1] = "Блю лэйбл";
-                                        break;
-                                    case "/upload/resize_cache/uf/6f5/180_60_1/6f51acaeea54e6ea0282b813589c659f.png":
-                                        itemsList[cnt, 1] = "Армакон";
-                                        break;
-                                    case "/upload/resize_cache/uf/846/180_60_1/8466e7c003794e83355a9a6bfc42e5c0.png":
-                                        itemsList[cnt, 1] = "АМПАРО";
-                                        break;
-                                    case "/upload/resize_cache/uf/d8d/180_60_1/d8d8c2cd905c1b2ced42c09b2442de3b.png":
-                                        itemsList[cnt, 1] = "VENTO";
-                                        break;
-                                    case "/upload/resize_cache/uf/f56/180_60_1/logo_black-_1_.png":
-                                        itemsList[cnt, 1] = "SURGUT";
-                                        break;
-                                    case "/upload/uf/0a3/0a3483598708baae623571f83939aceb.png":
-                                        itemsList[cnt, 1] = "Step";
-                                        break;
-                                    case "/upload/resize_cache/uf/c99/180_60_1/logo-_1_.png":
-                                        itemsList[cnt, 1] = "STANDART";
-                                        break;
-                                    case "/upload/resize_cache/uf/a99/180_60_1/a99119570db1bfed37514e30710a44de.png":
-                                        itemsList[cnt, 1] = "NordMan Extreme";
-                                        break;
-                                    case "/upload/resize_cache/uf/86c/180_60_1/ezgif_1_7fdef90553.gif":
-                                        itemsList[cnt, 1] = "Med Fashion Lab";
-                                        break;
-                                    case "/upload/resize_cache/uf/e39/180_60_1/e39163847320cdb75d0c43902db41299.png":
-                                        itemsList[cnt, 1] = "Manipula Specialist";
-                                        break;
-                                    case "/upload/resize_cache/uf/7a3/180_60_1/4oNsEGmmVqA-kopiya.jpg":
-                                        itemsList[cnt, 1] = "Jeta Safety";
-                                        break;
-                                    case "/upload/uf/16d/logo.png":
-                                        itemsList[cnt, 1] = "WPL";
-                                        break;
-                                    case "/upload/resize_cache/uf/dbe/180_60_1/ezgif_5_55ec707db7.gif":
-                                        itemsList[cnt, 1] = "Chirton";
-                                        break;
-                                    case "/upload/uf/0ad/logo_alt.svg":
-                                        itemsList[cnt, 1] = "Bolle";
-                                        break;
-                                    case "/upload/uf/854/picto47big.gif":
-                                        itemsList[cnt, 1] = "ANSELL";
-                                        break;
-                                    default:
-                                        itemsList[cnt, 1] = "Profline";
-                                        break;
+                                    string logolink = currentItemData[0].SelectSingleNode(".//img[@class='info__logo lazyload']").GetAttributeValue("scr", "").ToString();
+                                    if (logolink != null)
+                                    {
+                                        switch (logolink)
+                                        {
+                                            case "/upload/uf/9da/Resurs-1.svg":
+                                                itemsList[cnt, 1] = "Факел";
+                                                break;
+                                            case "/upload/uf/ac1/logo.svg":
+                                                itemsList[cnt, 1] = "БарсПрофи";
+                                                break;
+                                            case "/upload/resize_cache/uf/f23/180_60_1/cropped_Logotip_Rabosiz_2022.png":
+                                                itemsList[cnt, 1] = "Рабосиз";
+                                                break;
+                                            case "/upload/resize_cache/uf/3ad/180_60_1/FireShot-Capture-044-_-Press_tsentr-_ARTI_zavod_-_-arti_zavod.ru.png":
+                                                itemsList[cnt, 1] = "АРТИ-Завод";
+                                                break;
+                                            case "/upload/uf/528/logo.svg":
+                                                itemsList[cnt, 1] = "BENOVY";
+                                                break;
+                                            case "/upload/uf/812/8127d00e5969d98616d684e7782d6a3e.png":
+                                                itemsList[cnt, 1] = "Скорпион";
+                                                break;
+                                            case "/upload/uf/245/Resurs-1.svg":
+                                                itemsList[cnt, 1] = "Псков-Полимер";
+                                                break;
+                                            case "/upload/resize_cache/uf/18b/180_60_1/95097d7ccf5de167a38746e5f2daa547.jpg":
+                                                itemsList[cnt, 1] = "Rutex";
+                                                break;
+                                            case "/upload/uf/6bb/logo.svg":
+                                                itemsList[cnt, 1] = "Защитная линия";
+                                                break;
+                                            case "/upload/resize_cache/uf/54b/180_60_1/54bcd9b2ee60b3aa152ed9b0496ddc65.jpg":
+                                                itemsList[cnt, 1] = "ЗападБалтОбувь";
+                                                break;
+                                            case "/upload/uf/e2a/ursus_top_logo.svg":
+                                                itemsList[cnt, 1] = "URSUS";
+                                                break;
+                                            case "/upload/resize_cache/uf/bd7/180_60_1/bd7b8b0ce469e138793825044f1e0262.png":
+                                                itemsList[cnt, 1] = "SURA";
+                                                break;
+                                            case "/upload/resize_cache/uf/6b2/180_60_1/portwest_logo_oj.png":
+                                                itemsList[cnt, 1] = "Portwest";
+                                                break;
+                                            case "/upload/uf/e35/YAkhting.svg":
+                                                itemsList[cnt, 1] = "Яхтинг";
+                                                break;
+                                            case "/upload/uf/ac6/logo.svg":
+                                                itemsList[cnt, 1] = "ЭЛЕН";
+                                                break;
+                                            case "/upload/resize_cache/uf/6c2/180_60_1/6c2c5bb8d4041948ff7962ad0fb26641.png":
+                                                itemsList[cnt, 1] = "ФЭСТ";
+                                                break;
+                                            case "/upload/resize_cache/uf/c83/180_60_1/c83b079a0189cc09ea5bf2f8c4abd4f4.png":
+                                                itemsList[cnt, 1] = "ОРИОН-РТИ";
+                                                break;
+                                            case "/upload/uf/52e/52e5247b4abc6b48b75ddf43a181ca84.png":
+                                                itemsList[cnt, 1] = "Лилия";
+                                                break;
+                                            case "/upload/uf/a01/Resurs-1.svg":
+                                                itemsList[cnt, 1] = "Бриз-Кама";
+                                                break;
+                                            case "/upload/resize_cache/uf/866/180_60_1/866711a633d2edcb1ec07deed7075d0b.png":
+                                                itemsList[cnt, 1] = "Блю лэйбл";
+                                                break;
+                                            case "/upload/resize_cache/uf/6f5/180_60_1/6f51acaeea54e6ea0282b813589c659f.png":
+                                                itemsList[cnt, 1] = "Армакон";
+                                                break;
+                                            case "/upload/resize_cache/uf/846/180_60_1/8466e7c003794e83355a9a6bfc42e5c0.png":
+                                                itemsList[cnt, 1] = "АМПАРО";
+                                                break;
+                                            case "/upload/resize_cache/uf/d8d/180_60_1/d8d8c2cd905c1b2ced42c09b2442de3b.png":
+                                                itemsList[cnt, 1] = "VENTO";
+                                                break;
+                                            case "/upload/resize_cache/uf/f56/180_60_1/logo_black-_1_.png":
+                                                itemsList[cnt, 1] = "SURGUT";
+                                                break;
+                                            case "/upload/uf/0a3/0a3483598708baae623571f83939aceb.png":
+                                                itemsList[cnt, 1] = "Step";
+                                                break;
+                                            case "/upload/resize_cache/uf/c99/180_60_1/logo-_1_.png":
+                                                itemsList[cnt, 1] = "STANDART";
+                                                break;
+                                            case "/upload/resize_cache/uf/a99/180_60_1/a99119570db1bfed37514e30710a44de.png":
+                                                itemsList[cnt, 1] = "NordMan Extreme";
+                                                break;
+                                            case "/upload/resize_cache/uf/86c/180_60_1/ezgif_1_7fdef90553.gif":
+                                                itemsList[cnt, 1] = "Med Fashion Lab";
+                                                break;
+                                            case "/upload/resize_cache/uf/e39/180_60_1/e39163847320cdb75d0c43902db41299.png":
+                                                itemsList[cnt, 1] = "Manipula Specialist";
+                                                break;
+                                            case "/upload/resize_cache/uf/7a3/180_60_1/4oNsEGmmVqA-kopiya.jpg":
+                                                itemsList[cnt, 1] = "Jeta Safety";
+                                                break;
+                                            case "/upload/uf/16d/logo.png":
+                                                itemsList[cnt, 1] = "WPL";
+                                                break;
+                                            case "/upload/resize_cache/uf/dbe/180_60_1/ezgif_5_55ec707db7.gif":
+                                                itemsList[cnt, 1] = "Chirton";
+                                                break;
+                                            case "/upload/uf/0ad/logo_alt.svg":
+                                                itemsList[cnt, 1] = "Bolle";
+                                                break;
+                                            case "/upload/uf/854/picto47big.gif":
+                                                itemsList[cnt, 1] = "ANSELL";
+                                                break;
+                                            default:
+                                                itemsList[cnt, 1] = "Profline";
+                                                break;
+                                        }
+                                    }
+                                    
+                                }
+                                catch
+                                {
+                                    Console.WriteLine("Проблема с брендом");
+                                    itemsList[cnt, 1] = "Нет бранда";
                                 }
                                 brand = itemsList[cnt, 1];
+                                break;
+                            case "Материал подкладки:":
+                                under = itemsList[cnt, 1];
                                 break;
                             case "ГОСТ:":
                                 gost = itemsList[cnt, 1];
@@ -312,23 +338,30 @@ namespace FakelToOzon
                                 var protects = currentItemData[0].SelectNodes(".//img[@class='info__shield-item']");
                                 protect = new string[protects.Count];
                                 int protect_cnt = 0;
-                                
-                                foreach (var item in protects)
-                                { if (item.GetAttributeValue("data-tooltip", "").ToString() != null && item != null )
+                                try
+                                {
+                                    foreach (var item in protects)
                                     {
-                                        try
+                                        if (item.GetAttributeValue("data-tooltip", "").ToString() != null && item != null)
                                         {
-                                            protect[cnt] = item.GetAttributeValue("data-tooltip", "").ToString();
+                                            try
+                                            {
+                                                protect[cnt] = item.GetAttributeValue("data-tooltip", "").ToString();
+                                            }
+                                            catch { protect = [""]; }
                                         }
-                                        catch { protect[cnt] = ""; }
-                                    }
-                                    else
-                                    {
-                                        protect[cnt] = "";
-                                    }
-                                    protectsOUT += protect[cnt].TrimStart(' ', '\n').TrimEnd(' ', '\n') + ".";
-                                    protect_cnt++;
+                                        else
+                                        {
+                                            protect[cnt] = "";
+                                        }
+                                        protectsOUT += protect[cnt].TrimStart(' ', '\n').TrimEnd(' ', '\n') + ".";
+                                        protect_cnt++;
 
+                                    }
+                                }
+                                catch
+                                {
+                                    protectsOUT = "";
                                 }
                                 itemsList[cnt, 1] = protectsOUT;
                                 break;
@@ -350,6 +383,7 @@ namespace FakelToOzon
                 builder.Brand = brand;
                 builder.Protects=protectsOUT;
                 builder.AllParameters = data;
+                builder.Under = under;
 
                 Console.WriteLine("Параметры найдены");
 
@@ -370,15 +404,15 @@ namespace FakelToOzon
             {
                 string name = string.Join(",", s.Take(s.Length - 1));
                 string color = s.Last();
-                builder.Hash = GetHash(name).ToString();
+                
                 builder.Name = name;
                 builder.Color = color;
             }
             else
             {
-                string name = string.Join(",", s.Take(s.Length - 1));
+                string name = block;
                 string color = s.Last();
-                builder.Hash = GetHash(name).ToString();
+                ;
                 builder.Name = name;
                 builder.Color = color;
             }
@@ -470,14 +504,7 @@ namespace FakelToOzon
                 return this; 
             }
         }
-        public ParsingCurrentItem GetHash(string input)
-        {
-            var md5 = MD5.Create();
-            var hash = md5.ComputeHash(Encoding.UTF8.GetBytes(input));
-            builder.Hash = Convert.ToBase64String(hash).ToString();
-
-             return this ;
-        }
+        
         public JSONBuilder Build()
         {
             return builder;
@@ -513,6 +540,9 @@ namespace FakelToOzon
                 builder.GetDescription(_document, _baseUrl);
                 builder.GetParametersTablet(_document, _baseUrl);
                 builder.GetNameAndColor(_document, _baseUrl);
+                builder.GetSex(_document, _baseUrl);
+                builder.GetCategory(_document, _baseUrl);
+                
                 Thread.Sleep(10000);
 
 
