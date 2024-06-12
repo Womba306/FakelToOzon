@@ -1,4 +1,5 @@
 ﻿using Medallion;
+using System.Text.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -24,7 +25,7 @@ namespace FakelToOzon
         public string Brand { get; set; }
         public string Color { get; set; }
         public List<string> Size { get; set; }
-        public List<string> Imgs { get; set; }
+        public List<string> Images { get; set; }
         public string Hash { get; set; }
         public string TRTS { get; set; }
         public string GOST { get; set; }
@@ -32,12 +33,8 @@ namespace FakelToOzon
         public string Zipper { get; set; }
         public string Protects { get; set; }
         public string AllParameters { get; set; }
-        
-        //public string Zipper { get; set; }
-        //public string Zipper { get; set; }
-
-
-
+        public string Sex { get; set; }
+        public string Category { get; set; }
     }
     public class ParsingCurrentItem
     {
@@ -94,7 +91,7 @@ namespace FakelToOzon
                     //СЮДА JSON 
                     images.Add($"{_baseUrl}{currentUrl.GetAttributeValue("href", "")}");
                 }
-                builder.Imgs = images;
+                builder.Images = images;
 
 
                  return this;
@@ -369,19 +366,115 @@ namespace FakelToOzon
         {
             var block = _document.DocumentNode.SelectSingleNode(".//div[@class='content']/h1[@class='content__title wrapper']").InnerText.TrimStart(' ', '\n').TrimEnd(' ', '\n');
             string[] s = block.Split(",");
-            string name = string.Join(",", s.Take(s.Length - 1));
-            string color = s.Last();
-            builder.Hash = GetHash(name).ToString();
-            builder.Name = name;
-            builder.Color = color;
+            if (s.Length > 1)
+            {
+                string name = string.Join(",", s.Take(s.Length - 1));
+                string color = s.Last();
+                builder.Hash = GetHash(name).ToString();
+                builder.Name = name;
+                builder.Color = color;
+            }
+            else
+            {
+                string name = string.Join(",", s.Take(s.Length - 1));
+                string color = s.Last();
+                builder.Hash = GetHash(name).ToString();
+                builder.Name = name;
+                builder.Color = color;
+            }
              return this;
 
+        }
+        public ParsingCurrentItem GetCategory(HtmlAgilityPack.HtmlDocument _document, string _baseUrl)
+        {
+            var category = builder.Name;
+            switch (category)
+            {
+                case string s when s.ToLower().Contains("куртк"):
+                    builder.Category = "Одежда > Спецодежда > Куртка рабочая";
+                    break;
+                case string s when s.ToLower().Contains("костюм"):
+                    builder.Category = "Одежда > Спецодежда > Костюм рабочий";
+                    break;
+                case string s when s.ToLower().Contains("жилет"):
+                    builder.Category = "Одежда > Спецодежда > Жилет рабочий";
+                    break;
+                case string s when s.ToLower().Contains("брюки"):
+                    builder.Category = "Одежда > Спецодежда > Брюки рабочие";
+                    break;
+                case string s when s.ToLower().Contains("полукомбинезон"):
+                    builder.Category = "Одежда > Спецодежда > Полукомбинезон рабочий";
+                    break;
+                case string s when s.ToLower().Contains("охранни"):
+                    builder.Category = "Одежда > Спецодежда > Форма силовых структур";
+                    break;
+                case string s when s.ToLower().Contains("халат"):
+                    builder.Category = "Аптека > Одежда медицинская > Верхняя одежда адаптивная";
+                    break;
+                case string s when s.ToLower().Contains("хирург"):
+                    builder.Category = "Аптека > Одежда медицинская > Верхняя одежда адаптивная";
+                    break;
+                case string s when s.ToLower().Contains("сапог"):
+                    builder.Category = "Обувь > Спортивная и рабочая обувь > Сапоги рабочие";
+                    break;
+                case string s when s.ToLower().Contains("тапоч"):
+                    builder.Category = "Обувь > Повседневная обувь > Тапочки";
+                    break;
+                case string s when s.ToLower().Contains("сандал"):
+                    builder.Category = "Обувь > Спортивная и рабочая обувь > Сандалии рабочие";
+                    break;
+                case string s when s.ToLower().Contains("сабо"):
+                    builder.Category = "Обувь > Повседневная обувь > Сабо рабочие";
+                    break;
+                case string s when s.ToLower().Contains("полуботинк"):
+                    builder.Category = "Обувь > Спортивная и рабочая обувь > Полуботинки рабочие";
+                    break;
+                case string s when s.ToLower().Contains("ботинк"):
+                    builder.Category = "Обувь > Спортивная и рабочая обувь > Ботинки рабочие";
+                    break;
+                case string s when s.ToLower().Contains("галош"):
+                    builder.Category = "Обувь > Спортивная и рабочая обувь > Галоши";
+                    break;
+                case string s when s.ToLower().Contains("перчатк"):
+                    builder.Category = "Строительство и ремонт > Средства защиты и пожаротушения > Перчатки защитные";
+                    break;
+                case string s when s.ToLower().Contains("рукавиц"):
+                    builder.Category = "Строительство и ремонт > Средства защиты и пожаротушения > Рукавицы защитные";
+                    break;
+
+
+
+
+
+                default:
+                    builder.Category = "";
+                    break;
+            }
+            return this;
+        }
+        public ParsingCurrentItem GetSex(HtmlAgilityPack.HtmlDocument _document, string _baseUrl)
+        {
+            if (builder.Name.ToLower().Contains("мужск"))
+            {
+                builder.Sex = "Мужской";
+                return this;
+            }
+            else if (builder.Name.ToLower().Contains("женск"))
+            {
+                builder.Sex = "Женский";
+                return this;
+            }
+            else 
+            {
+                builder.Sex = "Женский, Мужской";
+                return this; 
+            }
         }
         public ParsingCurrentItem GetHash(string input)
         {
             var md5 = MD5.Create();
             var hash = md5.ComputeHash(Encoding.UTF8.GetBytes(input));
-            builder.Hash = Convert.ToBase64String(hash);
+            builder.Hash = Convert.ToBase64String(hash).ToString();
 
              return this ;
         }
@@ -395,6 +488,17 @@ namespace FakelToOzon
     }
     public class JsonToOzon
     {
+        public async Task CreateJsonAndUploadToOzonAsync()
+        {
+            var ozonApi = new OzonApi("https://api.ozon.ru", "1391788", "b2c42bcd-0aed-4d50-80dc-32e6b720260a");
+            var jsonBuilders = CreateJson();
+
+            foreach (var jsonBuilder in jsonBuilders)
+            {
+                await ozonApi.UploadProductAsync(jsonBuilder);
+            }
+        }
+
         public IEnumerable< JSONBuilder >CreateJson()
         {
             //Глобалы
@@ -414,7 +518,37 @@ namespace FakelToOzon
 
                yield return builder.Build();
             }
-        } 
+        }
+        public class OzonApi
+        {
+            private readonly string _apiUrl;
+            private readonly string _clientId;
+            private readonly string _apiKey;
+
+            public OzonApi(string apiUrl, string clientId, string apiKey)
+            {
+                _apiUrl = apiUrl;
+                _clientId = clientId;
+                _apiKey = apiKey;
+            }
+
+            public async Task UploadProductAsync(JSONBuilder product)
+            {
+                var json = JsonSerializer.Serialize(product);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                using var client = new HttpClient();
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Client-ID", _clientId);
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Api-Key", _apiKey);
+
+                var response = await client.PostAsync(_apiUrl + "/v3/product/import", content);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception($"Failed to upload product: {response.StatusCode}");
+                }
+            }
+        }
     }
     
     }
