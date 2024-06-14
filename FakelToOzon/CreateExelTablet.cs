@@ -52,7 +52,7 @@ namespace FakelToOzon
             {
                 foreach (var price in builder.Price)
                 {
-                    double over_price = (price * 0.63 * 3);
+                    double over_price = (price * 0.64 * 3);
                     if (over_price >= 1500)
                     {
                         using (var md5 = MD5.Create())
