@@ -1,0 +1,73 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number: 2 (0x2)
+    Signature Algorithm: sha256WithRSAEncryption
+        Issuer: C=TW, ST=netgear, L=TW, O=netgear, OU=netgear, CN=netgear CA/name=RAX40-CE20/emailAddress=mail@netgear.com
+        Validity
+            Not Before: Feb 27 19:48:38 2020 GMT
+            Not After : Feb 22 19:48:38 2040 GMT
+        Subject: C=TW, ST=netgear, L=TW, O=netgear, OU=netgear, CN=client/name=RAX40-CE20/emailAddress=mail@netgear.com
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (1024 bit)
+                Modulus:
+                    00:b5:a2:f5:53:93:9d:18:27:46:d8:24:20:7f:b0:
+                    a3:7f:08:f9:d2:7b:2a:40:45:9e:46:95:b6:49:0b:
+                    0a:0a:05:38:92:42:9e:a3:0a:c6:0b:08:aa:3a:e1:
+                    ee:b4:a1:b1:33:f6:3e:e8:c6:95:1d:ae:2a:70:b9:
+                    40:a2:d1:f0:e5:d0:f9:67:c2:2d:ef:ea:da:54:79:
+                    cb:d5:b2:bc:c2:f7:d3:95:7c:f5:99:b1:3a:64:f3:
+                    ca:25:36:80:c3:02:b7:70:19:20:aa:3b:94:13:57:
+                    cf:c0:84:81:c1:3b:f5:22:dd:3f:55:ea:95:32:c1:
+                    a4:6d:1c:86:27:0a:02:10:29
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            Netscape Comment: 
+                Easy-RSA Generated Certificate
+            X509v3 Subject Key Identifier: 
+                61:8A:22:EF:AE:D7:57:16:38:2E:7F:BA:BE:EF:13:8D:2D:9F:FE:DB
+            X509v3 Authority Key Identifier: 
+                keyid:CD:1F:0F:32:8F:CB:95:4E:7D:D4:27:54:7D:37:3F:B1:54:DD:4C:3F
+                DirName:/C=TW/ST=netgear/L=TW/O=netgear/OU=netgear/CN=netgear CA/name=RAX40-CE20/emailAddress=mail@netgear.com
+                serial:D7:97:C3:E1:C4:71:AA:34
+
+            X509v3 Extended Key Usage: 
+                TLS Web Client Authentication
+            X509v3 Key Usage: 
+                Digital Signature
+    Signature Algorithm: sha256WithRSAEncryption
+         9b:8b:ba:d6:3f:04:82:de:c7:ab:12:aa:ef:f8:46:ff:16:25:
+         1f:1f:ac:91:a0:3b:24:99:39:46:ce:77:73:92:ff:35:48:9e:
+         9c:7a:0e:7b:29:25:76:c7:10:6d:c5:44:98:bf:21:76:a3:d5:
+         65:59:55:fa:e5:e3:37:3a:9b:c8:51:e8:b3:c4:17:12:c8:48:
+         92:85:7e:1a:c4:fd:71:54:99:f7:2e:60:d0:5f:c2:54:53:f1:
+         2e:72:d1:f5:25:e4:c4:77:49:98:b5:09:c0:93:7b:eb:a5:8e:
+         d3:3b:65:d1:8b:2b:23:e4:18:c3:fb:0f:c9:75:9a:d2:fc:8f:
+         26:e1
+-----BEGIN CERTIFICATE-----
+MIID/jCCA2egAwIBAgIBAjANBgkqhkiG9w0BAQsFADCBmzELMAkGA1UEBhMCVFcx
+EDAOBgNVBAgTB25ldGdlYXIxCzAJBgNVBAcTAlRXMRAwDgYDVQQKEwduZXRnZWFy
+MRAwDgYDVQQLEwduZXRnZWFyMRMwEQYDVQQDEwpuZXRnZWFyIENBMRMwEQYDVQQp
+EwpSQVg0MC1DRTIwMR8wHQYJKoZIhvcNAQkBFhBtYWlsQG5ldGdlYXIuY29tMB4X
+DTIwMDIyNzE5NDgzOFoXDTQwMDIyMjE5NDgzOFowgZcxCzAJBgNVBAYTAlRXMRAw
+DgYDVQQIEwduZXRnZWFyMQswCQYDVQQHEwJUVzEQMA4GA1UEChMHbmV0Z2VhcjEQ
+MA4GA1UECxMHbmV0Z2VhcjEPMA0GA1UEAxMGY2xpZW50MRMwEQYDVQQpEwpSQVg0
+MC1DRTIwMR8wHQYJKoZIhvcNAQkBFhBtYWlsQG5ldGdlYXIuY29tMIGfMA0GCSqG
+SIb3DQEBAQUAA4GNADCBiQKBgQC1ovVTk50YJ0bYJCB/sKN/CPnSeypARZ5GlbZJ
+CwoKBTiSQp6jCsYLCKo64e60obEz9j7oxpUdripwuUCi0fDl0Plnwi3v6tpUecvV
+srzC99OVfPWZsTpk88olNoDDArdwGSCqO5QTV8/AhIHBO/Ui3T9V6pUywaRtHIYn
+CgIQKQIDAQABo4IBUjCCAU4wCQYDVR0TBAIwADAtBglghkgBhvhCAQ0EIBYeRWFz
+eS1SU0EgR2VuZXJhdGVkIENlcnRpZmljYXRlMB0GA1UdDgQWBBRhiiLvrtdXFjgu
+f7q+7xONLZ/+2zCB0AYDVR0jBIHIMIHFgBTNHw8yj8uVTn3UJ1R9Nz+xVN1MP6GB
+oaSBnjCBmzELMAkGA1UEBhMCVFcxEDAOBgNVBAgTB25ldGdlYXIxCzAJBgNVBAcT
+AlRXMRAwDgYDVQQKEwduZXRnZWFyMRAwDgYDVQQLEwduZXRnZWFyMRMwEQYDVQQD
+EwpuZXRnZWFyIENBMRMwEQYDVQQpEwpSQVg0MC1DRTIwMR8wHQYJKoZIhvcNAQkB
+FhBtYWlsQG5ldGdlYXIuY29tggkA15fD4cRxqjQwEwYDVR0lBAwwCgYIKwYBBQUH
+AwIwCwYDVR0PBAQDAgeAMA0GCSqGSIb3DQEBCwUAA4GBAJuLutY/BILex6sSqu/4
+Rv8WJR8frJGgOySZOUbOd3OS/zVInpx6DnspJXbHEG3FRJi/IXaj1WVZVfrl4zc6
+m8hR6LPEFxLISJKFfhrE/XFUmfcuYNBfwlRT8S5y0fUl5MR3SZi1CcCTe+uljtM7
+ZdGLKyPkGMP7D8l1mtL8jybh
+-----END CERTIFICATE-----

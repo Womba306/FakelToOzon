@@ -20,8 +20,16 @@ class Program
         {
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            startInfo.FileName = @"C:\Program Files\OpenVPN\bin\openvpn.exe";
-            startInfo.Arguments = @"--cd ""C:\Program Files\OpenVPN\config"" --config UserVPN.ovpn --verb 11";
+
+            startInfo.FileName = @"..\data\VPN\OpenVPN\bin\openvpn.exe";
+            startInfo.Arguments = @"--cd ""../data/VPN/OpenVPN/config/"" --config UserVPN.ovpn --verb 11";
+            if (System.Diagnostics.Debugger.IsAttached)
+            {
+                // This code will only be executed in Debug mode
+
+                startInfo.FileName = @"..\..\..\data\VPN\OpenVPN\bin\openvpn.exe";
+                startInfo.Arguments = @"--cd ""../../../data/VPN/OpenVPN/config/"" --config UserVPN.ovpn --verb 11";
+            }
             startInfo.Verb = "runas";
             process.StartInfo = startInfo;
             process.Start();
