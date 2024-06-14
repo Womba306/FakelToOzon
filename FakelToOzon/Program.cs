@@ -13,10 +13,8 @@ using System.Threading.Tasks;
 
 class Program
 {
-    static async Task Main() 
+    static async Task Main()
     {
-        //Включить перед началом работы
-
         Console.WriteLine("При проблемах с кодировкой ставь <Кириллица (ISO)> или <Windows-1251>");
         using (Process process = new Process())
         {
@@ -30,20 +28,18 @@ class Program
             Console.WriteLine("Подключен Впн, не забудь его выключить");
             Thread.Sleep(5000);
 
-
             GlobalVariables globalVariables = new();
             string _baseUrl = globalVariables.BaseURL;
-
+            CreateExcelTable createExcelTable = new CreateExcelTable();
             JsonToOzon jsonToOzon = new JsonToOzon();
             ConvertToJson convertToJson = new ConvertToJson();
-            foreach (var item in jsonToOzon.CreateJson())
-            {
-                convertToJson.ConvertToJsonDev(item);
-            }
-            process.Close();
+
+            createExcelTable.CreateTable();
+
+            
         }
-        
     }
+
        
 }
 
