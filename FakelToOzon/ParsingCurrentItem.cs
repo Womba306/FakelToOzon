@@ -18,7 +18,7 @@ namespace FakelToOzon
 
         public string Name { get; set; }
         public string Description { get; set; }
-        public List<string> Price { get; set; }
+        public List<double> Price { get; set; }
         public string Articule { get; set; }
         public string CodeTNVED { get; set; }
         public string Weight { get; set; }
@@ -26,7 +26,7 @@ namespace FakelToOzon
         public string Color { get; set; }
         public List<string> Size { get; set; }
         public List<string> Images { get; set; }
-        
+        public List<int> Count { get; set; }
         public string TRTS { get; set; }
         public string GOST { get; set; }
         public string Season { get; set; }
@@ -112,23 +112,27 @@ namespace FakelToOzon
                 string[,] itemsList = new string[tabletLine.Count, 3];
                 int cnt = 0;
                 List<string> sizes = new List<string>();
-                List<string> prices = new List<string>();
+                List<double> prices = new List<double>();
+                List<int> countes = new List<int>();
                 foreach (var tabletItem in tabletLine)
                 {
                     var currentItemData = tabletItem.SelectNodes(".//td");
                     if (currentItemData != null && currentItemData.Count >= 3)
                     {
                         itemsList[cnt, 0] = currentItemData[0].SelectSingleNode(".//div[@class='product-table__name']").InnerText.TrimStart(' ', '\n').TrimEnd(' ', '\n');
-                        itemsList[cnt, 1] = currentItemData[1].SelectSingleNode(".//span[@class='product-table__price product-table__price_disabled']").InnerText.TrimStart(' ', '\n').TrimEnd(' ', '\n');
-                        itemsList[cnt, 2] = currentItemData[2].SelectSingleNode(".//span[@class='product-table__available']").InnerText.TrimStart(' ', '\n').TrimEnd(' ', '\n');
+                        itemsList[cnt, 1] = currentItemData[1].SelectSingleNode(".//span[@class='product-table__price product-table__price_disabled']").InnerText.TrimStart(' ', '\n').TrimEnd(' ', '\n').Replace("₽", "").Replace(".",",");
+                        itemsList[cnt, 2] = currentItemData[2].SelectSingleNode(".//span[@class='product-table__available']").InnerText.TrimStart(' ', '\n').TrimEnd(' ', '\n').Replace("+", "").Replace("(", "").Replace(")", "") +" ";
                         sizes.Add(itemsList[cnt, 0]);
-                        prices.Add(itemsList[cnt, 1]);
+                        prices.Add(double.Parse(itemsList[cnt, 1]));
+                        int index = itemsList[cnt, 2].IndexOf(" ");
+                        countes.Add(Convert.ToInt32(itemsList[cnt, 2].Substring(0, index)));
                     }
                     cnt++;
 
                 }
                 builder.Size = sizes;
                 builder.Price = prices;
+                builder.Count = countes;
                 // size, price, product_count
                return this;
 
