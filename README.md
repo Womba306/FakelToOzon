@@ -2,7 +2,7 @@
 
 - Скачивать `publish.rar` или `publish.zip`
 - Расспакуйте в папку в пути к которой **НЕТ** кириллицы
-
+- Запускаем `~\net8.0\publish\FakelToOzon.exe`
 
 ***ЕСЛИ ПРИ ЗАПУСКЕ ПРОГРАММЫ VPN ВЫДАЕТ ОШИБКУ:*** 
    Скачайте последнюю версию [OpenVPN](https://openvpn.net/community-downloads/) и/или [Образ VPN](https://openproxylist.com/openvpn/)
