@@ -36,6 +36,9 @@ namespace FakelToOzon
         public string Sex { get; set; }
         public string Category { get; set; }
         public string Under {  get; set; }
+        public string Length {  get; set; }
+        public string Width { get; set; }
+        public string Height { get; set; }
     }
     public class ParsingCurrentItem
     {
@@ -430,54 +433,206 @@ namespace FakelToOzon
             {
                 case string s when s.ToLower().Contains("куртк"):
                     builder.Category = "Одежда > Спецодежда > Куртка рабочая";
+                    if (builder.Season == "Лето")
+                    {
+                        builder.Length = "390";
+                        builder.Width = "410";
+                        builder.Height = "110";
+
+                    }
+                    else
+                    {
+                        builder.Length = "720";
+                        builder.Width = "520";
+                        builder.Height = "130";
+                    }
+                   
                     break;
                 case string s when s.ToLower().Contains("костюм"):
                     builder.Category = "Одежда > Спецодежда > Костюм рабочий";
+                    if (builder.Season == "Лето")
+                    {
+                        builder.Length = "590";
+                        builder.Width = "410";
+                        builder.Height = "270";
+
+                    }
+                    else
+                    {
+                        builder.Length = "720";
+                        builder.Width = "520";
+                        builder.Height = "130";
+                    }
                     break;
                 case string s when s.ToLower().Contains("жилет"):
                     builder.Category = "Одежда > Спецодежда > Жилет рабочий";
+                    if (builder.Season == "Лето")
+                    {
+                        builder.Length = "590";
+                        builder.Width = "410";
+                        builder.Height = "270";
+
+                    }
+                    else
+                    {
+                        builder.Length = "720";
+                        builder.Width = "520";
+                        builder.Height = "130";
+                    }
                     break;
                 case string s when s.ToLower().Contains("брюки"):
                     builder.Category = "Одежда > Спецодежда > Брюки рабочие";
+                    if (builder.Season == "Лето")
+                    {
+                        builder.Length = "590";
+                        builder.Width = "410";
+                        builder.Height = "270";
+
+                    }
+                    else
+                    {
+                        builder.Length = "720";
+                        builder.Width = "520";
+                        builder.Height = "130";
+                    }
                     break;
                 case string s when s.ToLower().Contains("полукомбинезон"):
                     builder.Category = "Одежда > Спецодежда > Полукомбинезон рабочий";
+                    if (builder.Season == "Лето")
+                    {
+                        builder.Length = "590";
+                        builder.Width = "410";
+                        builder.Height = "270";
+
+                    }
+                    else
+                    {
+                        builder.Length = "720";
+                        builder.Width = "520";
+                        builder.Height = "130";
+                    }
                     break;
                 case string s when s.ToLower().Contains("охранни"):
                     builder.Category = "Одежда > Спецодежда > Форма силовых структур";
+                    if (builder.Season == "Лето")
+                    {
+                        builder.Length = "590";
+                        builder.Width = "410";
+                        builder.Height = "270";
+
+                    }
+                    else
+                    {
+                        builder.Length = "720";
+                        builder.Width = "520";
+                        builder.Height = "130";
+                    }
                     break;
                 case string s when s.ToLower().Contains("халат"):
                     builder.Category = "Аптека > Одежда медицинская > Верхняя одежда адаптивная";
+                    if (builder.Season == "Лето")
+                    {
+                        builder.Length = "590";
+                        builder.Width = "410";
+                        builder.Height = "270";
+
+                    }
+                    else
+                    {
+                        builder.Length = "720";
+                        builder.Width = "520";
+                        builder.Height = "130";
+                    }
                     break;
                 case string s when s.ToLower().Contains("хирург"):
                     builder.Category = "Аптека > Одежда медицинская > Верхняя одежда адаптивная";
+                    if (builder.Season == "Лето")
+                    {
+                        builder.Length = "590";
+                        builder.Width = "410";
+                        builder.Height = "270";
+
+                    }
+                    else
+                    {
+                        builder.Length = "720";
+                        builder.Width = "520";
+                        builder.Height = "130";
+                    }
                     break;
                 case string s when s.ToLower().Contains("сапог"):
                     builder.Category = "Обувь > Спортивная и рабочая обувь > Сапоги рабочие";
+                    
+                        builder.Length = "450";
+                        builder.Width = "300";
+                        builder.Height = "200";
+
+                    
+                   
                     break;
                 case string s when s.ToLower().Contains("тапоч"):
                     builder.Category = "Обувь > Повседневная обувь > Тапочки";
+                    builder.Length = "450";
+                    builder.Width = "300";
+                    builder.Height = "200";
+
+
                     break;
+
                 case string s when s.ToLower().Contains("сандал"):
                     builder.Category = "Обувь > Спортивная и рабочая обувь > Сандалии рабочие";
+                    builder.Length = "450";
+                    builder.Width = "300";
+                    builder.Height = "200";
+
+
                     break;
                 case string s when s.ToLower().Contains("сабо"):
                     builder.Category = "Обувь > Повседневная обувь > Сабо рабочие";
+                    builder.Length = "450";
+                    builder.Width = "300";
+                    builder.Height = "200";
+
+
                     break;
                 case string s when s.ToLower().Contains("полуботинк"):
                     builder.Category = "Обувь > Спортивная и рабочая обувь > Полуботинки рабочие";
+                    builder.Length = "450";
+                    builder.Width = "300";
+                    builder.Height = "200";
+
+
                     break;
                 case string s when s.ToLower().Contains("ботинк"):
-                    builder.Category = "Обувь > Спортивная и рабочая обувь > Ботинки рабочие";
+                    builder.Category = "Обувь > Спортивная и рабочая обувь > Ботинки рабочие"; builder.Length = "450";
+                    builder.Width = "300";
+                    builder.Height = "200";
+
+
                     break;
                 case string s when s.ToLower().Contains("галош"):
                     builder.Category = "Обувь > Спортивная и рабочая обувь > Галоши";
+                    builder.Length = "450";
+                    builder.Width = "300";
+                    builder.Height = "200";
+
+
                     break;
                 case string s when s.ToLower().Contains("перчатк"):
                     builder.Category = "Строительство и ремонт > Средства защиты и пожаротушения > Перчатки защитные";
+                    builder.Length = "450";
+                    builder.Width = "300";
+                    builder.Height = "200";
+
+
                     break;
                 case string s when s.ToLower().Contains("рукавиц"):
                     builder.Category = "Строительство и ремонт > Средства защиты и пожаротушения > Рукавицы защитные";
+                    builder.Length = "450";
+                    builder.Width = "300";
+                    builder.Height = "200";
+
+
                     break;
 
 
