@@ -66,7 +66,10 @@ namespace FakelToOzon
                             {
                                 var hash = md5.ComputeHash(Encoding.UTF8.GetBytes(builder.Name));
                                 var hashString = BitConverter.ToString(hash).Replace("-", "").ToLower();
-
+                                string wight = builder.Width;
+                                string height = builder.Height;
+                                string lenght = builder.Length;
+                                int weight = builder.Weight;
                                 foreach (var size in builder.Size)
                                 {
                                     worksheet.Cells[row, 1].Value = row - 3;
@@ -77,18 +80,18 @@ namespace FakelToOzon
                                     worksheet.Cells[row, 6].Value = "Не облагается";
                                     worksheet.Cells[row, 7].Value = "";
                                     worksheet.Cells[row, 8].Value = "";
-                                    worksheet.Cells[row, 9].Value = builder.Weight;
-                                    worksheet.Cells[row, 10].Value = "";
-                                    worksheet.Cells[row, 11].Value = "";
-                                    worksheet.Cells[row, 12].Value = "";
+                                    worksheet.Cells[row, 9].Value = Convert.ToInt32(weight);
+                                    worksheet.Cells[row, 10].Value = wight;
+                                    worksheet.Cells[row, 11].Value = height;
+                                    worksheet.Cells[row, 12].Value = lenght;
                                     worksheet.Cells[row, 13].Value = builder.Images;
                                     worksheet.Cells[row, 14].Value = string.Join(";", builder.Images.Skip(1));
                                     worksheet.Cells[row, 15].Value = "";
                                     worksheet.Cells[row, 16].Value = "";
                                     worksheet.Cells[row, 17].Value = builder.Brand;
                                     worksheet.Cells[row, 18].Value = hashString;
-                                    worksheet.Cells[row, 19].Value = size;
-                                    worksheet.Cells[row, 20].Value = builder.Color;
+                                    worksheet.Cells[row, 19].Value = size.TrimEnd(' ', '\n').Replace("-", ";").Replace("/", ";");
+                                    worksheet.Cells[row, 20].Value = builder.MainColor;
                                     worksheet.Cells[row, 21].Value = size;
                                     worksheet.Cells[row, 22].Value = builder.Color;
                                     worksheet.Cells[row, 23].Value = builder.Category;

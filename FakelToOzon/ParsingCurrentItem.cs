@@ -21,9 +21,10 @@ namespace FakelToOzon
         public List<double> Price { get; set; }
         public string Articule { get; set; }
         public string CodeTNVED { get; set; }
-        public string Weight { get; set; }
+        public int Weight { get; set; }
         public string Brand { get; set; }
         public string Color { get; set; }
+        public string MainColor { get; set; }
         public List<string> Size { get; set; }
         public List<string> Images { get; set; }
         public List<int> Count { get; set; }
@@ -122,7 +123,7 @@ namespace FakelToOzon
                     var currentItemData = tabletItem.SelectNodes(".//td");
                     if (currentItemData != null && currentItemData.Count >= 3)
                     {
-                        itemsList[cnt, 0] = currentItemData[0].SelectSingleNode(".//div[@class='product-table__name']").InnerText.TrimStart(' ', '\n').TrimEnd(' ', '\n');
+                        itemsList[cnt, 0] = currentItemData[0].SelectSingleNode(".//div[@class='product-table__name']").InnerText.TrimStart(' ', '\n');
                         itemsList[cnt, 1] = currentItemData[1].SelectSingleNode(".//span[@class='product-table__price product-table__price_disabled']").InnerText.TrimStart(' ', '\n').TrimEnd(' ', '\n').Replace("₽", "").Replace(".",",");
                         itemsList[cnt, 2] = currentItemData[2].SelectSingleNode(".//span[@class='product-table__available']").InnerText.TrimStart(' ', '\n').TrimEnd(' ', '\n').Replace("+", "").Replace("(", "").Replace(")", "") +" ";
                         sizes.Add(itemsList[cnt, 0]);
@@ -176,7 +177,7 @@ namespace FakelToOzon
 
                 string codeTNVED = "";
                 string trts = "";
-                string weght = "";
+                int weght = 0;
                 string gost = "";
                 string season = "";
                 string ziper = "";
@@ -203,7 +204,7 @@ namespace FakelToOzon
                                 trts = itemsList[cnt, 1];
                                 break;
                             case "Вес (кг. за 1 шт.):":
-                                weght = (Convert.ToDecimal(itemsList[cnt, 1].Replace(".",",")) * 1000).ToString();
+                                weght = Convert.ToInt32(Convert.ToDouble(itemsList[cnt, 1].Replace(".",","))* 1000);
                                 break;
                             case "Марка/бренд:":
                                 try
@@ -339,7 +340,28 @@ namespace FakelToOzon
                                 season = itemsList[cnt, 1];
                                 break;
                             case "Вид центральной застежки (куртка):":
-                                ziper = itemsList[cnt, 1];
+                                if(itemsList[cnt, 1].Contains("кнопки"))
+                                {
+                                    ziper = "Кнопки";
+                                }
+                                else if(itemsList[cnt, 1].Contains("петли/пуговицы"))
+                                {
+                                    ziper = "Пуговицы";
+                                }
+                                else if (itemsList[cnt, 1].Contains("молния"))
+                                {
+                                    ziper = "Молния";
+                                }
+                                else if (itemsList[cnt, 1].Contains("лента"))
+                                {
+                                    ziper = "Липучки";
+                                }
+                                else
+                                { 
+                                    ziper = "Без застежки";
+                                }
+
+                                 
                                 break;
                             case "Защитные свойства:":
                                 var protects = currentItemData[0].SelectNodes(".//img[@class='info__shield-item']");
@@ -412,14 +434,16 @@ namespace FakelToOzon
                 string name = string.Join(",", s.Take(s.Length - 1));
                 string color = s.Last();
                 
+                
                 builder.Name = name;
                 builder.Color = color;
+                builder.MainColor = color.Split(@"/")[0].Replace("т.","").Replace("св.","");
             }
             else
             {
                 string name = block;
-                string color = s.Last();
-                ;
+                string color = "";
+                
                 builder.Name = name;
                 builder.Color = color;
             }
@@ -432,7 +456,7 @@ namespace FakelToOzon
             switch (category)
             {
                 case string s when s.ToLower().Contains("куртк"):
-                    builder.Category = "Одежда > Спецодежда > Куртка рабочая";
+                    builder.Category = " Куртка рабочая ";
                     if (builder.Season == "Лето")
                     {
                         builder.Length = "390";
@@ -449,7 +473,7 @@ namespace FakelToOzon
                    
                     break;
                 case string s when s.ToLower().Contains("костюм"):
-                    builder.Category = "Одежда > Спецодежда > Костюм рабочий";
+                    builder.Category = " Костюм рабочий ";
                     if (builder.Season == "Лето")
                     {
                         builder.Length = "590";
@@ -465,7 +489,7 @@ namespace FakelToOzon
                     }
                     break;
                 case string s when s.ToLower().Contains("жилет"):
-                    builder.Category = "Одежда > Спецодежда > Жилет рабочий";
+                    builder.Category = " Жилет рабочий ";
                     if (builder.Season == "Лето")
                     {
                         builder.Length = "590";
@@ -481,7 +505,7 @@ namespace FakelToOzon
                     }
                     break;
                 case string s when s.ToLower().Contains("брюки"):
-                    builder.Category = "Одежда > Спецодежда > Брюки рабочие";
+                    builder.Category = " Брюки рабочие ";
                     if (builder.Season == "Лето")
                     {
                         builder.Length = "590";
@@ -497,7 +521,7 @@ namespace FakelToOzon
                     }
                     break;
                 case string s when s.ToLower().Contains("полукомбинезон"):
-                    builder.Category = "Одежда > Спецодежда > Полукомбинезон рабочий";
+                    builder.Category = " Полукомбинезон рабочий ";
                     if (builder.Season == "Лето")
                     {
                         builder.Length = "590";
@@ -513,7 +537,7 @@ namespace FakelToOzon
                     }
                     break;
                 case string s when s.ToLower().Contains("охранни"):
-                    builder.Category = "Одежда > Спецодежда > Форма силовых структур";
+                    builder.Category = " Форма силовых структур ";
                     if (builder.Season == "Лето")
                     {
                         builder.Length = "590";
@@ -529,7 +553,7 @@ namespace FakelToOzon
                     }
                     break;
                 case string s when s.ToLower().Contains("халат"):
-                    builder.Category = "Аптека > Одежда медицинская > Верхняя одежда адаптивная";
+                    builder.Category = " Верхняя одежда адаптивная ";
                     if (builder.Season == "Лето")
                     {
                         builder.Length = "590";
@@ -545,7 +569,7 @@ namespace FakelToOzon
                     }
                     break;
                 case string s when s.ToLower().Contains("хирург"):
-                    builder.Category = "Аптека > Одежда медицинская > Верхняя одежда адаптивная";
+                    builder.Category = " Верхняя одежда адаптивная ";
                     if (builder.Season == "Лето")
                     {
                         builder.Length = "590";
@@ -561,7 +585,7 @@ namespace FakelToOzon
                     }
                     break;
                 case string s when s.ToLower().Contains("сапог"):
-                    builder.Category = "Обувь > Спортивная и рабочая обувь > Сапоги рабочие";
+                    builder.Category = " Сапоги рабочие ";
                     
                         builder.Length = "450";
                         builder.Width = "300";
@@ -571,7 +595,7 @@ namespace FakelToOzon
                    
                     break;
                 case string s when s.ToLower().Contains("тапоч"):
-                    builder.Category = "Обувь > Повседневная обувь > Тапочки";
+                    builder.Category = " Тапочки ";
                     builder.Length = "450";
                     builder.Width = "300";
                     builder.Height = "200";
@@ -580,7 +604,7 @@ namespace FakelToOzon
                     break;
 
                 case string s when s.ToLower().Contains("сандал"):
-                    builder.Category = "Обувь > Спортивная и рабочая обувь > Сандалии рабочие";
+                    builder.Category = " Сандалии рабочие ";
                     builder.Length = "450";
                     builder.Width = "300";
                     builder.Height = "200";
@@ -588,7 +612,7 @@ namespace FakelToOzon
 
                     break;
                 case string s when s.ToLower().Contains("сабо"):
-                    builder.Category = "Обувь > Повседневная обувь > Сабо рабочие";
+                    builder.Category = " Сабо рабочие ";
                     builder.Length = "450";
                     builder.Width = "300";
                     builder.Height = "200";
@@ -596,7 +620,7 @@ namespace FakelToOzon
 
                     break;
                 case string s when s.ToLower().Contains("полуботинк"):
-                    builder.Category = "Обувь > Спортивная и рабочая обувь > Полуботинки рабочие";
+                    builder.Category = " Полуботинки рабочие ";
                     builder.Length = "450";
                     builder.Width = "300";
                     builder.Height = "200";
@@ -604,14 +628,15 @@ namespace FakelToOzon
 
                     break;
                 case string s when s.ToLower().Contains("ботинк"):
-                    builder.Category = "Обувь > Спортивная и рабочая обувь > Ботинки рабочие"; builder.Length = "450";
+                    builder.Category = " Ботинки рабочие ";
+                    builder.Length = "450";
                     builder.Width = "300";
                     builder.Height = "200";
 
 
                     break;
                 case string s when s.ToLower().Contains("галош"):
-                    builder.Category = "Обувь > Спортивная и рабочая обувь > Галоши";
+                    builder.Category = " Галоши ";
                     builder.Length = "450";
                     builder.Width = "300";
                     builder.Height = "200";
@@ -619,7 +644,7 @@ namespace FakelToOzon
 
                     break;
                 case string s when s.ToLower().Contains("перчатк"):
-                    builder.Category = "Строительство и ремонт > Средства защиты и пожаротушения > Перчатки защитные";
+                    builder.Category = " Перчатки защитные ";
                     builder.Length = "450";
                     builder.Width = "300";
                     builder.Height = "200";
@@ -627,7 +652,7 @@ namespace FakelToOzon
 
                     break;
                 case string s when s.ToLower().Contains("рукавиц"):
-                    builder.Category = "Строительство и ремонт > Средства защиты и пожаротушения > Рукавицы защитные";
+                    builder.Category = " Рукавицы защитные ";
                     builder.Length = "450";
                     builder.Width = "300";
                     builder.Height = "200";
@@ -659,7 +684,7 @@ namespace FakelToOzon
             }
             else 
             {
-                builder.Sex = "Женский, Мужской";
+                builder.Sex = "Женский; Мужской";
                 return this; 
             }
         }
