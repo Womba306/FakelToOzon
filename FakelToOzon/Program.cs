@@ -33,7 +33,7 @@ class Program
             startInfo.Verb = "runas";
             process.StartInfo = startInfo;
             process.Start();
-            Console.WriteLine("Подключен Впн, не забудь его выключить");
+            Console.WriteLine("Подключен Впн, не забудь его выключить!");
             Thread.Sleep(5000);
 
             GlobalVariables globalVariables = new();
