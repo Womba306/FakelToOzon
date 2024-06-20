@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -7,6 +8,7 @@ using System.Security.Cryptography;
 using System.Text;
 using OfficeOpenXml;
 using OfficeOpenXml.ExternalReferences;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace FakelToOzon
 {
@@ -14,9 +16,9 @@ namespace FakelToOzon
     {
         int row = 4;
         private ExcelPackage package;
-        private string filePath;
-
-       
+        private string bfilePath;
+        private string cfilePath;
+        int count = 0;
         int cnt =0;
 
         public  void CreateTable() 
@@ -25,40 +27,50 @@ namespace FakelToOzon
 
             // Create a new Excel package
             JsonToOzon jsonToOzon = new JsonToOzon();
-          
+
             // Open the new file
-            
-                // Fill in the table with data from the Ozon API
+
+            // Fill in the table with data from the Ozon API
             foreach (var builder in jsonToOzon.CreateJson())
             {
-                if (cnt == 0) {
+                if (cnt == 0)
+                {
                     string baseFilePath = @"..\data\EXEL\base.xlsx";
-
-                    // Copy the base file to the new file path
                     string directoryPath = @"..\data\OUT";
+                    
+              
                     if (System.Diagnostics.Debugger.IsAttached)
                     {
                         baseFilePath = @"..\..\..\data\EXEL\base.xlsx";
-
-                        // Copy the base file to the new file path
                         directoryPath = @"..\..\..\data\OUT";
+                        
+                       
                     }
 
                     ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                   
+                    string baseFileName = $"Товар_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.xlsx";
+                    bfilePath = Path.Combine(directoryPath, baseFileName);
+                    
+                    
+                   
+                    
 
-                    string fileName = $"Report_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.xlsx";
-                    filePath = Path.Combine(directoryPath, fileName);
-                    File.Copy(baseFilePath, filePath, true);
+                    // Copy the file
+                    File.Copy(baseFilePath, bfilePath, true);
                 }
-                
-                using (var package = new ExcelPackage(new FileInfo(filePath)))
+              
+                using (var package = new ExcelPackage(new FileInfo(bfilePath)))
                 {
+                    
                     // Get the workbook and worksheet
                     var workbook = package.Workbook;
                     var worksheet = workbook.Worksheets["Шаблон"];
+                   
 
                     foreach (var price in builder.Price)
                     {
+                         
                         double over_price = (price * 0.64 * 3);
                         if (over_price >= 1000)
                         {
@@ -72,6 +84,8 @@ namespace FakelToOzon
                                 int weight = builder.Weight;
                                 foreach (var size in builder.Size)
                                 {
+
+                                    count += builder.Count[row-4];
                                     worksheet.Cells[row, 1].Value = row - 3;
                                     worksheet.Cells[row, 2].Value = builder.Articule;
                                     worksheet.Cells[row, 3].Value = builder.Name;
@@ -107,20 +121,47 @@ namespace FakelToOzon
                                     row++;
                                 }
                             }
-                            
+
                         }
+                        
                     }
+                  
                     cnt++;
                     worksheet.DataValidations.Clear();
                     package.Save();
+
                     if (cnt == 30)
                     {
-                       
+
                         Console.WriteLine("Одна страница отработала! ");
                         cnt = 0;
                         row = 4;
+                        
                     }
                 }
+
+                string count_directoryPath = @"..\data\OUT";
+                string countFilePath = @"..\data\EXEL\count.xlsx";
+                if (System.Diagnostics.Debugger.IsAttached)
+                {
+                    countFilePath = @"..\..\..\data\EXEL\count.xlsx";
+                    count_directoryPath = @"..\..\..\data\OUT";
+
+                }
+                string countFileName = $"Количество_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.xlsx";
+                cfilePath = Path.Combine(count_directoryPath, countFileName);
+                File.Copy(countFilePath, cfilePath);
+                using (var count_package = new ExcelPackage(new FileInfo(cfilePath)))
+                {
+                    var count_workbook = count_package.Workbook;
+                    var count_worksheet = count_workbook.Worksheets["Остатки на складе"];
+                    count_worksheet.Cells[row - 2, 2].Value = builder.Articule;
+                    count_worksheet.Cells[row - 2, 3].Value = builder.Name;
+                    count_worksheet.Cells[row - 2, 4].Value = count;
+                    count_worksheet.DataValidations.Clear();
+                    count_package.Save();
+                }
+                count = 0;
             }
         }
         
