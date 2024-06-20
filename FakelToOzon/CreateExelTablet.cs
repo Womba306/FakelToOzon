@@ -51,117 +51,131 @@ namespace FakelToOzon
                    
                     string baseFileName = $"Товар_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.xlsx";
                     bfilePath = Path.Combine(directoryPath, baseFileName);
-                    
-                    
-                   
-                    
+
+
+
+               // C: \Users\dimon\source\repos\Womba306\FakelToOzon\FakelToOzon\data\OUT\
 
                     // Copy the file
                     File.Copy(baseFilePath, bfilePath, true);
                 }
-              
+
                 using (var package = new ExcelPackage(new FileInfo(bfilePath)))
                 {
-                    
-                    // Get the workbook and worksheet
-                    var workbook = package.Workbook;
-                    var worksheet = workbook.Worksheets["Шаблон"];
-                   
+                    try {
+                        // Get the workbook and worksheet
+                        var workbook = package.Workbook;
+                        var worksheet = workbook.Worksheets["Шаблон"];
 
-                    foreach (var price in builder.Price)
-                    {
-                         
-                        double over_price = (price * 0.64 * 3);
-                        if (over_price >= 1000)
+
+                        foreach (var price in builder.Price)
                         {
-                            using (var md5 = MD5.Create())
-                            {
-                                var hash = md5.ComputeHash(Encoding.UTF8.GetBytes(builder.Name));
-                                var hashString = BitConverter.ToString(hash).Replace("-", "").ToLower();
-                                string wight = builder.Width;
-                                string height = builder.Height;
-                                string lenght = builder.Length;
-                                int weight = builder.Weight;
-                                foreach (var size in builder.Size)
-                                {
 
-                                    count += builder.Count[row-4];
-                                    worksheet.Cells[row, 1].Value = row - 3;
-                                    worksheet.Cells[row, 2].Value = builder.Articule;
-                                    worksheet.Cells[row, 3].Value = builder.Name;
-                                    worksheet.Cells[row, 4].Value = over_price;
-                                    worksheet.Cells[row, 5].Value = over_price;
-                                    worksheet.Cells[row, 6].Value = "Не облагается";
-                                    worksheet.Cells[row, 7].Value = "";
-                                    worksheet.Cells[row, 8].Value = "";
-                                    worksheet.Cells[row, 9].Value = Convert.ToInt32(weight);
-                                    worksheet.Cells[row, 10].Value = wight;
-                                    worksheet.Cells[row, 11].Value = height;
-                                    worksheet.Cells[row, 12].Value = lenght;
-                                    worksheet.Cells[row, 13].Value = builder.Images;
-                                    worksheet.Cells[row, 14].Value = string.Join(";", builder.Images.Skip(1));
-                                    worksheet.Cells[row, 15].Value = "";
-                                    worksheet.Cells[row, 16].Value = "";
-                                    worksheet.Cells[row, 17].Value = builder.Brand;
-                                    worksheet.Cells[row, 18].Value = hashString;
-                                    worksheet.Cells[row, 19].Value = size.TrimEnd(' ', '\n').Replace("-", ";").Replace("/", ";");
-                                    worksheet.Cells[row, 20].Value = builder.MainColor;
-                                    worksheet.Cells[row, 21].Value = size;
-                                    worksheet.Cells[row, 22].Value = builder.Color;
-                                    worksheet.Cells[row, 23].Value = builder.Category;
-                                    worksheet.Cells[row, 24].Value = builder.Sex;
-                                    worksheet.Cells[row, 25].Value = "";
-                                    worksheet.Cells[row, 26].Value = builder.Description;
-                                    worksheet.Cells[row, 27].Value = "";
-                                    worksheet.Cells[row, 28].Value = "";
-                                    worksheet.Cells[row, 29].Value = builder.Under;
-                                    worksheet.Cells[row, 30].Value = "Россия";
-                                    worksheet.Cells[row, 31].Value = builder.Season;
-                                    worksheet.Cells[row, 40].Value = builder.Zipper;
-                                    row++;
+                            double over_price = (price * 0.64 * 3);
+                            if (over_price >= 1000)
+                            {
+                                using (var md5 = MD5.Create())
+                                {
+                                    var hash = md5.ComputeHash(Encoding.UTF8.GetBytes(builder.Name));
+                                    var hashString = BitConverter.ToString(hash).Replace("-", "").ToLower();
+                                    string wight = builder.Width;
+                                    string height = builder.Height;
+                                    string lenght = builder.Length;
+                                    int weight = builder.Weight;
+                                    foreach (var size in builder.Size)
+                                    {
+                                        if (builder.Count.Count != null && builder.Count.Count != 0)
+                                        {
+                                            count += builder.Count[row - 4];
+                                        }
+                                        else
+                                        {
+                                            count = 0;
+                                        }
+                                        worksheet.Cells[row, 1].Value = row - 3;
+                                        worksheet.Cells[row, 2].Value = builder.Articule;
+                                        worksheet.Cells[row, 3].Value = builder.Name;
+                                        worksheet.Cells[row, 4].Value = over_price;
+                                        worksheet.Cells[row, 5].Value = over_price;
+                                        worksheet.Cells[row, 6].Value = "Не облагается";
+                                        worksheet.Cells[row, 7].Value = "";
+                                        worksheet.Cells[row, 8].Value = "";
+                                        worksheet.Cells[row, 9].Value = Convert.ToInt32(weight);
+                                        worksheet.Cells[row, 10].Value = wight;
+                                        worksheet.Cells[row, 11].Value = height;
+                                        worksheet.Cells[row, 12].Value = lenght;
+                                        worksheet.Cells[row, 13].Value = builder.Images;
+                                        worksheet.Cells[row, 14].Value = string.Join(";", builder.Images.Skip(1));
+                                        worksheet.Cells[row, 15].Value = "";
+                                        worksheet.Cells[row, 16].Value = "";
+                                        worksheet.Cells[row, 17].Value = builder.Brand;
+                                        worksheet.Cells[row, 18].Value = hashString;
+                                        worksheet.Cells[row, 19].Value = size.TrimEnd(' ', '\n').Replace("-", ";").Replace("/", ";");
+                                        worksheet.Cells[row, 20].Value = builder.MainColor;
+                                        worksheet.Cells[row, 21].Value = size;
+                                        worksheet.Cells[row, 22].Value = builder.Color;
+                                        worksheet.Cells[row, 23].Value = builder.Category;
+                                        worksheet.Cells[row, 24].Value = builder.Sex;
+                                        worksheet.Cells[row, 25].Value = "";
+                                        worksheet.Cells[row, 26].Value = builder.Description;
+                                        worksheet.Cells[row, 27].Value = "";
+                                        worksheet.Cells[row, 28].Value = "";
+                                        worksheet.Cells[row, 29].Value = builder.Under;
+                                        worksheet.Cells[row, 30].Value = "Россия";
+                                        worksheet.Cells[row, 31].Value = builder.Season;
+                                        worksheet.Cells[row, 40].Value = builder.Zipper;
+                                        row++;
+                                    }
                                 }
+
                             }
+                        }
+
+
+
+
+                        cnt++;
+                        worksheet.DataValidations.Clear();
+                        package.Save();
+
+                        if (cnt == 30)
+                        {
+
+                            Console.WriteLine("Одна страница отработала! ");
+                            cnt = 0;
+                            row = 4;
 
                         }
-                        
                     }
-                  
-                    cnt++;
-                    worksheet.DataValidations.Clear();
-                    package.Save();
-
-                    if (cnt == 30)
+                    catch
                     {
-
-                        Console.WriteLine("Одна страница отработала! ");
-                        cnt = 0;
-                        row = 4;
-                        
+                        Console.WriteLine("Big PRoblem");
                     }
-                }
 
-                string count_directoryPath = @"..\data\OUT";
-                string countFilePath = @"..\data\EXEL\count.xlsx";
-                if (System.Diagnostics.Debugger.IsAttached)
-                {
-                    countFilePath = @"..\..\..\data\EXEL\count.xlsx";
-                    count_directoryPath = @"..\..\..\data\OUT";
+                    }
 
-                }
-                string countFileName = $"Количество_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.xlsx";
-                cfilePath = Path.Combine(count_directoryPath, countFileName);
-                File.Copy(countFilePath, cfilePath);
-                using (var count_package = new ExcelPackage(new FileInfo(cfilePath)))
-                {
-                    var count_workbook = count_package.Workbook;
-                    var count_worksheet = count_workbook.Worksheets["Остатки на складе"];
-                    count_worksheet.Cells[row - 2, 2].Value = builder.Articule;
-                    count_worksheet.Cells[row - 2, 3].Value = builder.Name;
-                    count_worksheet.Cells[row - 2, 4].Value = count;
-                    count_worksheet.DataValidations.Clear();
-                    count_package.Save();
-                }
-                count = 0;
+                //string count_directoryPath = @"..\data\OUT";
+                //string countFilePath = @"..\data\EXEL\count.xlsx";
+                //if (System.Diagnostics.Debugger.IsAttached)
+                //{
+                //    countFilePath = @"..\..\..\data\EXEL\count.xlsx";
+                //    count_directoryPath = @"..\..\..\data\OUT";
+
+                //}
+                //string countFileName = $"Количество_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.xlsx";
+                //cfilePath = Path.Combine(count_directoryPath, countFileName);
+                //File.Copy(countFilePath, cfilePath);
+                //using (var count_package = new ExcelPackage(new FileInfo(cfilePath)))
+                //{
+                //    var count_workbook = count_package.Workbook;
+                //    var count_worksheet = count_workbook.Worksheets["Остатки на складе"];
+                //    count_worksheet.Cells[row - 2, 2].Value = builder.Articule;
+                //    count_worksheet.Cells[row - 2, 3].Value = builder.Name;
+                //    count_worksheet.Cells[row - 2, 4].Value = count;
+                //    count_worksheet.DataValidations.Clear();
+                //    count_package.Save();
+                //}
+                //count = 0;
             }
         }
         
