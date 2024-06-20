@@ -1,6 +1,6 @@
 <h1>ИНСТРУКЦИЯ</h1> 
 
-- Скачивать `publish.rar` или `publish.zip`
+- Скачивать `FakelToOzon.rar` или `FakelToOzon.zip`
 - Расспакуйте в папку в пути к которой **НЕТ** кириллицы
 - Запускаем `~\net8.0\publish\FakelToOzon.exe`
 
