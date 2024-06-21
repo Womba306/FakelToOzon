@@ -2,7 +2,7 @@
 
 - Скачивать `FakelToOzon.rar` или `FakelToOzon.zip`
 - Расспакуйте в папку в пути к которой **НЕТ** кириллицы
-- Запускаем `~\net8.0\publish\FakelToOzon.exe`
+- Запускаем `~\net8.0\win-x64\FakelToOzon.exe` | `~\net8.0\win-x86\FakelToOzon.exe`
 
 ***ЕСЛИ ПРИ ЗАПУСКЕ ПРОГРАММЫ VPN ВЫДАЕТ ОШИБКУ:*** 
    Скачайте последнюю версию [OpenVPN](https://openvpn.net/community-downloads/) и/или [Образ VPN](https://openproxylist.com/openvpn/)
