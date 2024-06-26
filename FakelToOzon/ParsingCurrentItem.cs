@@ -10,15 +10,19 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using System.Net.Http.Headers;
+using System.Text.Json.Serialization;
 
 namespace FakelToOzon
 {
     public class JSONBuilder()
     {
-
+      
         public string Name { get; set; }
+
         public string Description { get; set; }
         public List<double> Price { get; set; }
+       
         public string Articule { get; set; }
         public string CodeTNVED { get; set; }
         public int Weight { get; set; }
@@ -27,6 +31,7 @@ namespace FakelToOzon
         public string MainColor { get; set; }
         public List<string> Size { get; set; }
         public List<string> Images { get; set; }
+      
         public List<int> Count { get; set; }
         public string TRTS { get; set; }
         public string GOST { get; set; }
@@ -40,6 +45,9 @@ namespace FakelToOzon
         public string Length {  get; set; }
         public string Width { get; set; }
         public string Height { get; set; }
+        
+
+       
     }
     public class ParsingCurrentItem
     {
@@ -710,7 +718,7 @@ namespace FakelToOzon
             }
         }
 
-        public IEnumerable< JSONBuilder >CreateJson()
+        public IEnumerable<JSONBuilder>CreateJson()
         {
             //Глобалы
             GlobalVariables globalVariables = new();
@@ -727,42 +735,13 @@ namespace FakelToOzon
                 builder.GetSex(_document, _baseUrl);
                 builder.GetCategory(_document, _baseUrl);
                 
-                Thread.Sleep(10000);
+                Thread.Sleep(5000);
 
 
                yield return builder.Build();
             }
         }
-        public class OzonApi
-        {
-            private readonly string _apiUrl;
-            private readonly string _clientId;
-            private readonly string _apiKey;
-
-            public OzonApi(string apiUrl, string clientId, string apiKey)
-            {
-                _apiUrl = apiUrl;
-                _clientId = clientId;
-                _apiKey = apiKey;
-            }
-
-            public async Task UploadProductAsync(JSONBuilder product)
-            {
-                var json = JsonSerializer.Serialize(product);
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-                using var client = new HttpClient();
-                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Client-ID", _clientId);
-                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Api-Key", _apiKey);
-
-                var response = await client.PostAsync(_apiUrl + "/v3/product/import", content);
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    throw new Exception($"Failed to upload product: {response.StatusCode}");
-                }
-            }
-        }
+     
     }
     
     }
