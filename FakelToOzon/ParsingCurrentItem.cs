@@ -42,9 +42,9 @@ namespace FakelToOzon
         public string Sex { get; set; }
         public string Category { get; set; }
         public string Under {  get; set; }
-        public string Length {  get; set; }
-        public string Width { get; set; }
-        public string Height { get; set; }
+        public double Length {  get; set; }
+        public double Width { get; set; }
+        public double Height { get; set; }
         
 
        
@@ -132,7 +132,7 @@ namespace FakelToOzon
                     if (currentItemData != null && currentItemData.Count >= 3)
                     {
                         itemsList[cnt, 0] = currentItemData[0].SelectSingleNode(".//div[@class='product-table__name']").InnerText.TrimStart(' ', '\n');
-                        itemsList[cnt, 1] = currentItemData[1].SelectSingleNode(".//span[@class='product-table__price product-table__price_disabled']").InnerText.TrimStart(' ', '\n').TrimEnd(' ', '\n').Replace("₽", "").Replace(".",",");
+                        itemsList[cnt, 1] = currentItemData[1].SelectSingleNode(".//span[@class='product-table__price product-table__price_disabled']").InnerText.TrimStart(' ', '\n').TrimEnd(' ', '\n').Replace("₽", "").Replace(".",",").Replace(" ", "");
                         itemsList[cnt, 2] = currentItemData[2].SelectSingleNode(".//span[@class='product-table__available']").InnerText.TrimStart(' ', '\n').TrimEnd(' ', '\n').Replace("+", "").Replace("(", "").Replace(")", "") +" ";
                         sizes.Add(itemsList[cnt, 0]);
                         prices.Add(double.Parse(itemsList[cnt, 1]));
@@ -467,16 +467,16 @@ namespace FakelToOzon
                     builder.Category = " Куртка рабочая ";
                     if (builder.Season == "Лето")
                     {
-                        builder.Length = "390";
-                        builder.Width = "410";
-                        builder.Height = "110";
+                        builder.Length = 270*0.7;
+                        builder.Width = 130 * 0.7;
+                        builder.Height = 100 * 0.7;
 
                     }
                     else
                     {
-                        builder.Length = "720";
-                        builder.Width = "520";
-                        builder.Height = "130";
+                        builder.Length = 320 * 0.7;
+                        builder.Width = 200 * 0.7;
+                        builder.Height = 130 * 0.7;
                     }
                    
                     break;
@@ -484,186 +484,166 @@ namespace FakelToOzon
                     builder.Category = " Костюм рабочий ";
                     if (builder.Season == "Лето")
                     {
-                        builder.Length = "590";
-                        builder.Width = "410";
-                        builder.Height = "270";
+                        builder.Length = 270 * 0.7;
+                        builder.Width = 150 * 0.7;
+                        builder.Height = 100 * 0.7;
 
                     }
                     else
                     {
-                        builder.Length = "720";
-                        builder.Width = "520";
-                        builder.Height = "130";
+                        builder.Length = 590*0.7;
+                        builder.Width = 265*0.7;
+                        builder.Height = 210*0.7;
                     }
                     break;
                 case string s when s.ToLower().Contains("жилет"):
                     builder.Category = " Жилет рабочий ";
                     if (builder.Season == "Лето")
                     {
-                        builder.Length = "590";
-                        builder.Width = "410";
-                        builder.Height = "270";
+                        builder.Length = 270 * 0.7;
+                        builder.Width = 150 * 0.7;
+                        builder.Height = 100 * 0.7;
 
                     }
-                    else
-                    {
-                        builder.Length = "720";
-                        builder.Width = "520";
-                        builder.Height = "130";
-                    }
+                   
                     break;
                 case string s when s.ToLower().Contains("брюки"):
                     builder.Category = " Брюки рабочие ";
                     if (builder.Season == "Лето")
                     {
-                        builder.Length = "590";
-                        builder.Width = "410";
-                        builder.Height = "270";
+                        builder.Length = 270 * 0.7;
+                        builder.Width = 150 * 0.7;
+                        builder.Height = 100 * 0.7;
 
                     }
-                    else
-                    {
-                        builder.Length = "720";
-                        builder.Width = "520";
-                        builder.Height = "130";
-                    }
+                    
                     break;
                 case string s when s.ToLower().Contains("полукомбинезон"):
                     builder.Category = " Полукомбинезон рабочий ";
                     if (builder.Season == "Лето")
                     {
-                        builder.Length = "590";
-                        builder.Width = "410";
-                        builder.Height = "270";
+                        builder.Length = 270 * 0.7;
+                        builder.Width = 130 * 0.7;
+                        builder.Height = 100 * 0.7;
 
                     }
                     else
                     {
-                        builder.Length = "720";
-                        builder.Width = "520";
-                        builder.Height = "130";
+                        builder.Length = 320 * 0.7;
+                        builder.Width = 200 * 0.7;
+                        builder.Height = 130 * 0.7;
                     }
                     break;
                 case string s when s.ToLower().Contains("охранни"):
                     builder.Category = " Форма силовых структур ";
                     if (builder.Season == "Лето")
                     {
-                        builder.Length = "590";
-                        builder.Width = "410";
-                        builder.Height = "270";
+                        builder.Length = 590 * 0.7;
+                        builder.Width = 410 * 0.7;
+                        builder.Height = 270 * 0.7;
 
                     }
                     else
                     {
-                        builder.Length = "720";
-                        builder.Width = "520";
-                        builder.Height = "130";
+                        builder.Length = 720 * 0.7;
+                        builder.Width = 520 * 0.7;
+                        builder.Height = 130 * 0.7;
                     }
                     break;
                 case string s when s.ToLower().Contains("халат"):
                     builder.Category = " Верхняя одежда адаптивная ";
                     if (builder.Season == "Лето")
                     {
-                        builder.Length = "590";
-                        builder.Width = "410";
-                        builder.Height = "270";
+                        builder.Length = 100*0.7;
+                        builder.Width = 100*0.7;
+                        builder.Height = 50*0.7;
 
                     }
-                    else
-                    {
-                        builder.Length = "720";
-                        builder.Width = "520";
-                        builder.Height = "130";
-                    }
+                 
                     break;
                 case string s when s.ToLower().Contains("хирург"):
                     builder.Category = " Верхняя одежда адаптивная ";
                     if (builder.Season == "Лето")
                     {
-                        builder.Length = "590";
-                        builder.Width = "410";
-                        builder.Height = "270";
+                        builder.Length = 100 * 0.7;
+                        builder.Width = 100 * 0.7;
+                        builder.Height = 50 * 0.7;
 
                     }
-                    else
-                    {
-                        builder.Length = "720";
-                        builder.Width = "520";
-                        builder.Height = "130";
-                    }
+                 
                     break;
                 case string s when s.ToLower().Contains("сапог"):
                     builder.Category = " Сапоги рабочие ";
                     
-                        builder.Length = "450";
-                        builder.Width = "300";
-                        builder.Height = "200";
+                        builder.Length = 450 * 0.7;
+                        builder.Width = 300 * 0.7;
+                        builder.Height = 200 * 0.7;
 
                     
                    
                     break;
                 case string s when s.ToLower().Contains("тапоч"):
                     builder.Category = " Тапочки ";
-                    builder.Length = "450";
-                    builder.Width = "300";
-                    builder.Height = "200";
+                    builder.Length = 450 * 0.7;
+                    builder.Width = 300 * 0.7;
+                    builder.Height = 200 * 0.7;
 
 
                     break;
 
                 case string s when s.ToLower().Contains("сандал"):
                     builder.Category = " Сандалии рабочие ";
-                    builder.Length = "450";
-                    builder.Width = "300";
-                    builder.Height = "200";
+                    builder.Length = 450 * 0.7;
+                    builder.Width = 300 * 0.7;
+                    builder.Height = 200 * 0.7;
 
 
                     break;
                 case string s when s.ToLower().Contains("сабо"):
                     builder.Category = " Сабо рабочие ";
-                    builder.Length = "450";
-                    builder.Width = "300";
-                    builder.Height = "200";
+                    builder.Length = 450 * 0.7;
+                    builder.Width = 300 * 0.7;
+                    builder.Height = 200 * 0.7;
 
 
                     break;
                 case string s when s.ToLower().Contains("полуботинк"):
                     builder.Category = " Полуботинки рабочие ";
-                    builder.Length = "450";
-                    builder.Width = "300";
-                    builder.Height = "200";
+                    builder.Length = 450 * 0.7;
+                    builder.Width = 300 * 0.7;
+                    builder.Height = 200 * 0.7;
 
 
                     break;
                 case string s when s.ToLower().Contains("ботинк"):
                     builder.Category = " Ботинки рабочие ";
-                    builder.Length = "450";
-                    builder.Width = "300";
-                    builder.Height = "200";
+                    builder.Length = 450 * 0.7;
+                    builder.Width = 300 * 0.7;
+                    builder.Height = 200 * 0.7;
 
 
                     break;
                 case string s when s.ToLower().Contains("галош"):
                     builder.Category = " Галоши ";
-                    builder.Length = "450";
-                    builder.Width = "300";
-                    builder.Height = "200";
+                    builder.Length = 450 * 0.7;
+                    builder.Width = 300 * 0.7;
+                    builder.Height = 200 * 0.7;
 
 
                     break;
                 case string s when s.ToLower().Contains("перчатк"):
                     builder.Category = " Перчатки защитные ";
-                    builder.Length = "450";
-                    builder.Width = "300";
-                    builder.Height = "200";
+                    builder.Length = 450 * 0.7;
+                    builder.Width = 300 * 0.7;
+                    builder.Height = 200 * 0.7;
 
 
                     break;
                 case string s when s.ToLower().Contains("рукавиц"):
                     builder.Category = " Рукавицы защитные ";
-                    builder.Length = "450";
-                    builder.Width = "300";
-                    builder.Height = "200";
+                    builder.Length = 450 * 0.7;
+                    builder.Width = 300 * 0.7;
+                    builder.Height = 200 * 0.7;
 
 
                     break;
