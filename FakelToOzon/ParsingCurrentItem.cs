@@ -45,7 +45,8 @@ namespace FakelToOzon
         public double Length {  get; set; }
         public double Width { get; set; }
         public double Height { get; set; }
-        
+        public bool BootsCategory { get; set; } = false;
+        public string MainMaterial { get; set; }
 
        
     }
@@ -168,7 +169,7 @@ namespace FakelToOzon
                 }
             }
             catch { Console.WriteLine("ЧТо-то с описание не так"); }
-            builder.Description = s;
+            builder.Description = "Описание:"+s.TrimStart(' ', '\n') +"Технические характеристики:"+ builder.AllParameters;
             //descroption
             return this;
 
@@ -194,6 +195,7 @@ namespace FakelToOzon
                 string data = null;
                 string protectsOUT = "";
                 string under = "";
+                string main_material = "";
                 foreach (var tabletItem in tabletLine)
                 {
                     var currentItemData = tabletItem.SelectNodes(".//td");
@@ -204,16 +206,22 @@ namespace FakelToOzon
 
                         switch (itemsList[cnt, 0])
                         {
+                            case "Основной материал:":
+                                main_material= itemsList[cnt, 1];
+                                break;
+
                             case "Код ТН ВЭД:":
                                 codeTNVED = itemsList[cnt, 1];
-
                                 break;
+
                             case "ТР/ТС:":
                                 trts = itemsList[cnt, 1];
                                 break;
+
                             case "Вес (кг. за 1 шт.):":
                                 weght = Convert.ToInt32(Convert.ToDouble(itemsList[cnt, 1].Replace(".",","))* 1000);
                                 break;
+
                             case "Марка/бренд:":
                                 try
                                 {
@@ -222,11 +230,14 @@ namespace FakelToOzon
                                     {
                                         switch (logolink)
                                         {
+                                            case "/upload/uf/d46/d4692445e107227c37ac151affb1b29f.png":
+                                                itemsList[cnt, 1] = "Profline";
+                                                break;
                                             case "/upload/uf/9da/Resurs-1.svg":
                                                 itemsList[cnt, 1] = "Факел";
                                                 break;
                                             case "/upload/uf/ac1/logo.svg":
-                                                itemsList[cnt, 1] = "БарсПрофи";
+                                                itemsList[cnt, 1] = "Барс";
                                                 break;
                                             case "/upload/resize_cache/uf/f23/180_60_1/cropped_Logotip_Rabosiz_2022.png":
                                                 itemsList[cnt, 1] = "Рабосиз";
@@ -324,10 +335,22 @@ namespace FakelToOzon
                                             case "/upload/uf/854/picto47big.gif":
                                                 itemsList[cnt, 1] = "ANSELL";
                                                 break;
-                                            default:
-                                                itemsList[cnt, 1] = "Profline";
+
+                                            case "/upload/uf/bd7/bd7b8b0ce469e138793825044f1e0262.png":
+                                                itemsList[cnt, 1] = "SURA";
+                                                break;
+                                            case "/upload/uf/54b/54bcd9b2ee60b3aa152ed9b0496ddc65.jpg":
+                                                itemsList[cnt, 1] = "ЗападБалтОбувь";
+                                                break;
+                                            case "/upload/uf/28d/28df9c35da13d97412da0fb06195160f.png":
+                                                itemsList[cnt, 1] = "DeltaPlus";
                                                 break;
                                         }
+
+                                    }
+                                    else
+                                    {
+                                        itemsList[cnt, 1] = currentItemData[0].SelectSingleNode(".//div[@class='product-table__name']").InnerText.TrimStart(' ', '\n');
                                     }
                                     
                                 }
@@ -450,7 +473,7 @@ namespace FakelToOzon
             else
             {
                 string name = block;
-                string color = "";
+                string color = "черный";
                 
                 builder.Name = name;
                 builder.Color = color;
@@ -467,183 +490,184 @@ namespace FakelToOzon
                     builder.Category = " Куртка рабочая ";
                     if (builder.Season == "Лето")
                     {
-                        builder.Length = 270*0.7;
-                        builder.Width = 130 * 0.7;
-                        builder.Height = 100 * 0.7;
+                        builder.Length = 270 * 0.6;
+                        builder.Width = 130 * 0.6;
+                        builder.Height = 100 * 0.6;
 
                     }
                     else
                     {
-                        builder.Length = 320 * 0.7;
-                        builder.Width = 200 * 0.7;
-                        builder.Height = 130 * 0.7;
+                        builder.Length = 320 * 0.6;
+                        builder.Width = 200 * 0.6;
+                        builder.Height = 130 * 0.6;
                     }
-                   
+
                     break;
                 case string s when s.ToLower().Contains("костюм"):
                     builder.Category = " Костюм рабочий ";
                     if (builder.Season == "Лето")
                     {
-                        builder.Length = 270 * 0.7;
-                        builder.Width = 150 * 0.7;
-                        builder.Height = 100 * 0.7;
+                        builder.Length = 270 * 0.6;
+                        builder.Width = 150 * 0.6;
+                        builder.Height = 100 * 0.6;
 
                     }
                     else
                     {
-                        builder.Length = 590*0.7;
-                        builder.Width = 265*0.7;
-                        builder.Height = 210*0.7;
+                        builder.Length = 590 * 0.6;
+                        builder.Width = 265 * 0.6;
+                        builder.Height = 210 * 0.6;
                     }
                     break;
                 case string s when s.ToLower().Contains("жилет"):
                     builder.Category = " Жилет рабочий ";
                     if (builder.Season == "Лето")
                     {
-                        builder.Length = 270 * 0.7;
-                        builder.Width = 150 * 0.7;
-                        builder.Height = 100 * 0.7;
+                        builder.Length = 270 * 0.6;
+                        builder.Width = 150 * 0.6;
+                        builder.Height = 100 * 0.6;
 
                     }
-                   
+
                     break;
                 case string s when s.ToLower().Contains("брюки"):
                     builder.Category = " Брюки рабочие ";
                     if (builder.Season == "Лето")
                     {
-                        builder.Length = 270 * 0.7;
-                        builder.Width = 150 * 0.7;
-                        builder.Height = 100 * 0.7;
+                        builder.Length = 270 * 0.6;
+                        builder.Width = 150 * 0.6;
+                        builder.Height = 100 * 0.6;
 
                     }
-                    
+
                     break;
                 case string s when s.ToLower().Contains("полукомбинезон"):
                     builder.Category = " Полукомбинезон рабочий ";
                     if (builder.Season == "Лето")
                     {
-                        builder.Length = 270 * 0.7;
-                        builder.Width = 130 * 0.7;
-                        builder.Height = 100 * 0.7;
+                        builder.Length = 270 * 0.6;
+                        builder.Width = 130 * 0.6;
+                        builder.Height = 100 * 0.6;
 
                     }
                     else
                     {
-                        builder.Length = 320 * 0.7;
-                        builder.Width = 200 * 0.7;
-                        builder.Height = 130 * 0.7;
+                        builder.Length = 320 * 0.6;
+                        builder.Width = 200 * 0.6;
+                        builder.Height = 130 * 0.6;
                     }
                     break;
                 case string s when s.ToLower().Contains("охранни"):
                     builder.Category = " Форма силовых структур ";
                     if (builder.Season == "Лето")
                     {
-                        builder.Length = 590 * 0.7;
-                        builder.Width = 410 * 0.7;
-                        builder.Height = 270 * 0.7;
+                        builder.Length = 590 * 0.6;
+                        builder.Width = 410 * 0.6;
+                        builder.Height = 270 * 0.6;
 
                     }
                     else
                     {
-                        builder.Length = 720 * 0.7;
-                        builder.Width = 520 * 0.7;
-                        builder.Height = 130 * 0.7;
+                        builder.Length = 720 * 0.6;
+                        builder.Width = 520 * 0.6;
+                        builder.Height = 130 * 0.6;
                     }
                     break;
                 case string s when s.ToLower().Contains("халат"):
                     builder.Category = " Верхняя одежда адаптивная ";
                     if (builder.Season == "Лето")
                     {
-                        builder.Length = 100*0.7;
-                        builder.Width = 100*0.7;
-                        builder.Height = 50*0.7;
+                        builder.Length = 100 * 0.6;
+                        builder.Width = 100 * 0.6;
+                        builder.Height = 50 * 0.6;
 
                     }
-                 
+
                     break;
                 case string s when s.ToLower().Contains("хирург"):
                     builder.Category = " Верхняя одежда адаптивная ";
                     if (builder.Season == "Лето")
                     {
-                        builder.Length = 100 * 0.7;
-                        builder.Width = 100 * 0.7;
-                        builder.Height = 50 * 0.7;
+                        builder.Length = 100 * 0.6;
+                        builder.Width = 100 * 0.6;
+                        builder.Height = 50 * 0.6;
 
                     }
-                 
+
                     break;
                 case string s when s.ToLower().Contains("сапог"):
                     builder.Category = " Сапоги рабочие ";
-                    
-                        builder.Length = 450 * 0.7;
-                        builder.Width = 300 * 0.7;
-                        builder.Height = 200 * 0.7;
 
-                    
-                   
+                    builder.Length = 450 * 0.6;
+                    builder.Width = 300 * 0.6;
+                    builder.Height = 200 * 0.6;
+                    builder.BootsCategory = true;
+
+
+
                     break;
                 case string s when s.ToLower().Contains("тапоч"):
                     builder.Category = " Тапочки ";
-                    builder.Length = 450 * 0.7;
-                    builder.Width = 300 * 0.7;
-                    builder.Height = 200 * 0.7;
-
+                    builder.Length = 450 * 0.6;
+                    builder.Width = 300 * 0.6;
+                    builder.Height = 200 * 0.6;
+                    builder.BootsCategory = true;
 
                     break;
 
                 case string s when s.ToLower().Contains("сандал"):
                     builder.Category = " Сандалии рабочие ";
-                    builder.Length = 450 * 0.7;
-                    builder.Width = 300 * 0.7;
-                    builder.Height = 200 * 0.7;
-
+                    builder.Length = 450 * 0.6;
+                    builder.Width = 300 * 0.6;
+                    builder.Height = 200 * 0.6;
+                    builder.BootsCategory = true;
 
                     break;
                 case string s when s.ToLower().Contains("сабо"):
                     builder.Category = " Сабо рабочие ";
-                    builder.Length = 450 * 0.7;
-                    builder.Width = 300 * 0.7;
-                    builder.Height = 200 * 0.7;
-
+                    builder.Length = 450 * 0.6;
+                    builder.Width = 300 * 0.6;
+                    builder.Height = 200 * 0.6;
+                    builder.BootsCategory = true;
 
                     break;
                 case string s when s.ToLower().Contains("полуботинк"):
                     builder.Category = " Полуботинки рабочие ";
-                    builder.Length = 450 * 0.7;
-                    builder.Width = 300 * 0.7;
-                    builder.Height = 200 * 0.7;
-
+                    builder.Length = 450 * 0.6;
+                    builder.Width = 300 * 0.6;
+                    builder.Height = 200 * 0.6;
+                    builder.BootsCategory = true;
 
                     break;
                 case string s when s.ToLower().Contains("ботинк"):
                     builder.Category = " Ботинки рабочие ";
-                    builder.Length = 450 * 0.7;
-                    builder.Width = 300 * 0.7;
-                    builder.Height = 200 * 0.7;
-
+                    builder.Length = 450 * 0.6;
+                    builder.Width = 300 * 0.6;
+                    builder.Height = 200 * 0.6;
+                    builder.BootsCategory = true;
 
                     break;
                 case string s when s.ToLower().Contains("галош"):
                     builder.Category = " Галоши ";
-                    builder.Length = 450 * 0.7;
-                    builder.Width = 300 * 0.7;
-                    builder.Height = 200 * 0.7;
-
+                    builder.Length = 450 * 0.6;
+                    builder.Width = 300 * 0.6;
+                    builder.Height = 200 * 0.6;
+                    builder.BootsCategory = true;
 
                     break;
                 case string s when s.ToLower().Contains("перчатк"):
                     builder.Category = " Перчатки защитные ";
-                    builder.Length = 450 * 0.7;
-                    builder.Width = 300 * 0.7;
-                    builder.Height = 200 * 0.7;
+                    builder.Length = 450 * 0.6;
+                    builder.Width = 300 * 0.6;
+                    builder.Height = 200 * 0.6;
 
 
                     break;
                 case string s when s.ToLower().Contains("рукавиц"):
                     builder.Category = " Рукавицы защитные ";
-                    builder.Length = 450 * 0.7;
-                    builder.Width = 300 * 0.7;
-                    builder.Height = 200 * 0.7;
+                    builder.Length = 450 * 0.6;
+                    builder.Width = 300 * 0.6;
+                    builder.Height = 200 * 0.6;
 
 
                     break;
@@ -709,8 +733,9 @@ namespace FakelToOzon
             {
                 builder.GetImgUrls(_document, _baseUrl);
                 builder.GetSizesTablet(_document, _baseUrl);
-                builder.GetDescription(_document, _baseUrl);
+                
                 builder.GetParametersTablet(_document, _baseUrl);
+                builder.GetDescription(_document, _baseUrl);
                 builder.GetNameAndColor(_document, _baseUrl);
                 builder.GetSex(_document, _baseUrl);
                 builder.GetCategory(_document, _baseUrl);

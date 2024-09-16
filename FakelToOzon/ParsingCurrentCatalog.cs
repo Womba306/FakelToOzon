@@ -30,57 +30,61 @@ namespace FakelToOzon
                             using (var _client = new HttpClient(_handler))
                             {
                                 string url = $"{_baseUrl + catalogsUrls.ToString()}?PAGEN_1={i}";
-                                using (HttpResponseMessage _response = _client.GetAsync(url).Result)
+                                if (!url.Contains("https://www.f-tk.ru/catalog/rasprodazha/"))
                                 {
-                                    if (_response.IsSuccessStatusCode)
+                                    using (HttpResponseMessage _response = _client.GetAsync(url).Result)
                                     {
-                                        var html = _response.Content.ReadAsStringAsync().Result;
-                                        if (!string.IsNullOrEmpty(html))
+                                        if (_response.IsSuccessStatusCode)
                                         {
-                                            HtmlAgilityPack.HtmlDocument _document = new HtmlAgilityPack.HtmlDocument();
-                                            _document.LoadHtml(html);
-                                            var page = _document.DocumentNode.SelectNodes(".//div[@class='catalog__pagination']//a[@class='pagination__item']");
-                                            List<int> pageindex = new List<int>();
-                                            foreach (var currentItem in page)
+                                            var html = _response.Content.ReadAsStringAsync().Result;
+                                            if (!string.IsNullOrEmpty(html))
                                             {
-                                                if (int.TryParse(currentItem.InnerText.ToString(), out var num))
+                                                HtmlAgilityPack.HtmlDocument _document = new HtmlAgilityPack.HtmlDocument();
+                                                _document.LoadHtml(html);
+                                                var page = _document.DocumentNode.SelectNodes(".//div[@class='catalog__pagination']//a[@class='pagination__item']");
+                                                List<int> pageindex = new List<int>();
+                                                foreach (var currentItem in page)
                                                 {
-                                                    pageindex.Add(num);
-                                                    
+                                                    if (int.TryParse(currentItem.InnerText.ToString(), out var num))
+                                                    {
+                                                        pageindex.Add(num);
+
+                                                    }
+                                                }
+                                                countpages = pageindex.Max();
+
+
+
+                                                var item = _document.DocumentNode.SelectNodes(".//div[@class='catalog__product-item product']//a[@class='product__image-wrapper']");
+                                                if (item != null && item.Count > 0)
+                                                {
+                                                    foreach (var currentItem in item)
+                                                    {
+                                                        Console.WriteLine(currentItem.GetAttributeValue("href", ""));
+                                                        yield return currentItem.GetAttributeValue("href", "");
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    Console.WriteLine("Список пуст, жди обновлений");
+                                                    yield return null;
                                                 }
                                             }
-                                            countpages = pageindex.Max();
 
-
-
-                                            var item = _document.DocumentNode.SelectNodes(".//div[@class='catalog__product-item product']//a[@class='product__image-wrapper']");
-                                            if (item != null && item.Count > 0)
-                                            {
-                                                foreach (var currentItem in item)
-                                                {
-                                                    Console.WriteLine(currentItem.GetAttributeValue("href", ""));
-                                                    yield return currentItem.GetAttributeValue("href", "");
-                                                }
-                                            }
                                             else
                                             {
-                                                Console.WriteLine("Список пуст, жди обновлений");
+                                                Console.WriteLine("Пустой HTML");
                                                 yield return null;
                                             }
                                         }
 
                                         else
                                         {
-                                            Console.WriteLine("Пустой HTML");
                                             yield return null;
                                         }
                                     }
-
-                                    else
-                                    {
-                                        yield return null;
-                                    }
                                 }
+                                
                             }
                         }
                     }
@@ -88,8 +92,9 @@ namespace FakelToOzon
                     {
                         Console.WriteLine("Блок отработал");
                     }
-                i++;
-                } while (i< countpages);
+                    i++;
+                } while (i < countpages);
+                }
 
             }
 
@@ -97,4 +102,4 @@ namespace FakelToOzon
         }
            
     }
-}
+
